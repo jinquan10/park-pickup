@@ -11,5 +11,11 @@
 
     <artifactId>impl</artifactId>
 
-
+    <dependencies>
+        <dependency>
+            <groupId>org.jz</groupId>
+            <artifactId>api</artifactId>
+            <version>${parent.version}</version>
+        </dependency>
+    </dependencies>
 </project>
