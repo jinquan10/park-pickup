@@ -1,9 +1,8 @@
-package main.java.parkpickup.bo.impl;
+package parkpickup.bo.impl;
 
-import main.java.parkpickup.bo.ParkApi;
-import main.java.parkpickup.dao.LocationDaoApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import parkpickup.dao.LocationDaoApi;
 
 @Component
 public class ParkApiImpl implements ParkApi {

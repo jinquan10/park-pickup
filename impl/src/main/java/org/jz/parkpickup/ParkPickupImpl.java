@@ -1,11 +1,11 @@
-package main.java.org.jz.parkpickup;
+package org.jz.parkpickup;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
 
-import static main.java.org.jz.parkpickup.Configuration.MAX_RADIUS_METERS;
+import static org.jz.parkpickup.Configuration.MAX_RADIUS_METERS;
 
 @Component
 public class ParkPickupImpl implements ParkPickup {

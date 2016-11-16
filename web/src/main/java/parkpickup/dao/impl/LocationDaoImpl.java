@@ -1,7 +1,7 @@
-package main.java.parkpickup.dao.impl;
+package parkpickup.dao.impl;
 
-import main.java.parkpickup.dao.LocationDaoApi;
 import org.springframework.stereotype.Component;
+import parkpickup.dao.LocationDaoApi;
 
 @Component
 public class LocationDaoImpl implements LocationDaoApi{

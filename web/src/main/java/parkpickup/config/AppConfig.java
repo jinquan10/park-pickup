@@ -1,4 +1,4 @@
-package main.java.parkpickup.config;
+package parkpickup.config;
 
 import org.springframework.context.annotation.Configuration;
 

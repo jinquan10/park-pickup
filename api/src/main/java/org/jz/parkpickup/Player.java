@@ -1,4 +1,4 @@
-package main.java.org.jz.parkpickup;
+package org.jz.parkpickup;
 
 public class Player {
     public long id;
