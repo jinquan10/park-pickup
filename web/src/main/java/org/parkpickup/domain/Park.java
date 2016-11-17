@@ -1,4 +1,4 @@
-package org.parkpickup;
+package org.parkpickup.domain;
 
 public class Park {
     private final String name;
