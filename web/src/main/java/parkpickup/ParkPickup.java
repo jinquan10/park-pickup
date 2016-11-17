@@ -1,4 +1,4 @@
-package org.jz.parkpickup;
+package parkpickup;
 
 import java.util.Set;
 
