@@ -1,4 +1,4 @@
-package org.parkpickup.api.http;
+package org.parkpickup.http;
 
 import org.parkpickup.PickupPlace;
 
