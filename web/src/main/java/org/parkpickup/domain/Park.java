@@ -3,13 +3,13 @@ package org.parkpickup.domain;
 import java.util.Set;
 
 public class Park {
-    private final String id;
+    private final Long id;
     private final String name;
     private final Double lat;
     private final Double lng;
     private final Set<Present> peoplePresent;
 
-    public Park(String id, String name, Double lat, Double lng, Set<Present> peoplePresent) {
+    public Park(Long id, String name, Double lat, Double lng, Set<Present> peoplePresent) {
         this.id = id;
         this.name = name;
         this.lat = lat;
@@ -17,7 +17,7 @@ public class Park {
         this.peoplePresent = peoplePresent;
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 

@@ -15,3 +15,8 @@ public class Application {
     }
 
 }
+
+// TODO Populate db with pbf data
+// TODO write sql query knn with radius search
+// TODO measure timing to get nearest with radius
+// TODO measure timing for nearest without radius
