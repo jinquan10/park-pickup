@@ -29,7 +29,7 @@ public class PersistenceInit {
     public JdbcTemplate execute() throws FileNotFoundException, SQLException {
         JdbcTemplate appTemplate = dbCreation.initDb(appDbName, adminUser);
 
-        String sqlStatement = resourceUtil.getSqlStatementFromFile("sql/init_tables.sql");
+        String sqlStatement = resourceUtil.getSqlStatementFromFile("sql/setup.sql");
         appTemplate.execute(sqlStatement);
 
         return appTemplate;

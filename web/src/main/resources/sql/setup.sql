@@ -1,5 +1,6 @@
 CREATE EXTENSION IF NOT EXISTS postgis;
 
 CREATE TABLE IF NOT EXISTS park(
-    id uuid
+    id bigint PRIMARY KEY,
+
 );
