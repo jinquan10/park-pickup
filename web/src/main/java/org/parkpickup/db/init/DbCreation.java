@@ -1,30 +1,43 @@
 package org.parkpickup.db.init;
 
 import org.parkpickup.ResourceUtil;
+import org.parkpickup.db.DataSourceFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
 import java.io.FileNotFoundException;
-import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import static org.parkpickup.db.DataSourceFactory.adminDb;
+import static org.parkpickup.db.DataSourceFactory.appDbName;
 
 @Component
 public class DbCreation {
     @Inject
     private ResourceUtil resourceUtil;
 
-    public void initDb(JdbcTemplate creationTemplate, String dbName, String owner) throws SQLException, FileNotFoundException {
-        ResultSet resultSet = creationTemplate.getDataSource().getConnection().getMetaData().getCatalogs();
+    @Inject
+    private DataSourceFactory dataSourceFactory;
 
-        while (resultSet.next()) {
-            if (resultSet.getString(1).equals(dbName)) {
-                String creationStatement = resourceUtil.getSqlStatementFromFile("sql/init_db.sql");
-                String preparedCreationStatement = String.format(creationStatement, dbName, owner);
-                creationTemplate.execute(preparedCreationStatement);
-                break;
+    public JdbcTemplate initDb(String dbName, String owner) throws SQLException, FileNotFoundException {
+        boolean shouldInitDb = false;
+
+        try {
+            // - test the connection to db
+            dataSourceFactory.getDataSource(appDbName).getConnection();
+        } catch (SQLException e) {
+            if (e.getMessage().contains("does not exist")) {
+                shouldInitDb = true;
             }
         }
-        resultSet.close();
+
+        if (shouldInitDb) {
+            String creationStatement = resourceUtil.getSqlStatementFromFile("sql/init_db.sql");
+            String preparedCreationStatement = String.format(creationStatement, dbName, owner);
+            new JdbcTemplate(dataSourceFactory.getDataSource(adminDb)).execute(preparedCreationStatement);
+        }
+
+        return new JdbcTemplate(dataSourceFactory.getDataSource(appDbName));
     }
 }

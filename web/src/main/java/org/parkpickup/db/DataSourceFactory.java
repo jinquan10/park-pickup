@@ -7,12 +7,17 @@ import javax.sql.DataSource;
 
 @Component
 public class DataSourceFactory {
-    public DataSource getDataSource(String adminName, String password, String dbName) {
+    public static final String appDbName = "parkpickup";
+    public static final String adminUser = "postgres";
+    public static final String adminDb = "postgres";
+    public static final String adminPassword = "parkpickup2016";
+
+    public DataSource getDataSource(String dbName) {
         DriverManagerDataSource ds = new DriverManagerDataSource();
         ds.setDriverClassName("org.postgresql.Driver");
         ds.setUrl("jdbc:postgresql://localhost:5432/" + dbName); // 5432 default postgres port
-        ds.setUsername(adminName);
-        ds.setPassword(password);
+        ds.setUsername(adminUser);
+        ds.setPassword(adminPassword);
 
         return ds;
     }

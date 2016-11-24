@@ -1,7 +1,10 @@
 package org.parkpickup.db.init;
 
+import org.parkpickup.Application;
 import org.parkpickup.ResourceUtil;
 import org.parkpickup.db.DataSourceFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
@@ -9,13 +12,11 @@ import javax.inject.Inject;
 import java.io.FileNotFoundException;
 import java.sql.SQLException;
 
+import static org.parkpickup.db.DataSourceFactory.adminUser;
+import static org.parkpickup.db.DataSourceFactory.appDbName;
+
 @Component
 public class PersistenceInit {
-    public static final String appDbName = "parkpickup";
-    public static final String adminUser = "postgres";
-    public static final String adminDb = "postgres";
-    public static final String adminPassword = "parkpickup2016";
-
     @Inject
     private ResourceUtil resourceUtil;
 
@@ -25,17 +26,19 @@ public class PersistenceInit {
     @Inject
     private DbCreation dbCreation;
 
-    public void execute() throws FileNotFoundException, SQLException {
-        JdbcTemplate createDbTemplate = new JdbcTemplate(dataSourceFactory.getDataSource(adminUser, adminPassword, adminDb));
-        dbCreation.initDb(createDbTemplate, appDbName, adminUser);
+    public JdbcTemplate execute() throws FileNotFoundException, SQLException {
+        JdbcTemplate appTemplate = dbCreation.initDb(appDbName, adminUser);
 
-        JdbcTemplate initCreatedDbTemplate = new JdbcTemplate(dataSourceFactory.getDataSource(adminUser, adminPassword, appDbName));
         String sqlStatement = resourceUtil.getSqlStatementFromFile("sql/init_tables.sql");
-        initCreatedDbTemplate.execute(sqlStatement);
+        appTemplate.execute(sqlStatement);
+
+        return appTemplate;
     }
 
     public static void main(String[] args) throws FileNotFoundException, SQLException {
-        PersistenceInit persistenceInit = new PersistenceInit();
+        ApplicationContext ctx = new AnnotationConfigApplicationContext(Application.class);
+
+        PersistenceInit persistenceInit = ctx.getBean(PersistenceInit.class);
         persistenceInit.execute();
     }
 }

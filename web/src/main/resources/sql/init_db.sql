@@ -1,6 +1,6 @@
 -- Database: parkpickup
 
-CREATE DATABASE IF NOT EXISTS %s
+CREATE DATABASE %s
     WITH
     OWNER = %s
     ENCODING = 'UTF8'
