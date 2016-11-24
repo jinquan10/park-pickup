@@ -1,4 +1,4 @@
-package org.parkpickup.etl;
+package org.parkpickup.db.init;
 
 import org.parkpickup.ResourceUtil;
 import org.springframework.jdbc.core.JdbcTemplate;

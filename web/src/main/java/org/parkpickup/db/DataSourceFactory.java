@@ -1,4 +1,4 @@
-package org.parkpickup.etl;
+package org.parkpickup.db;
 
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.stereotype.Component;
