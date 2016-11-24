@@ -1,5 +1,5 @@
-CREATE TABLE IF NOT EXISTS park(
-    id UNIQUE(uuid),
-    name string,
+CREATE EXTENSION postgis;
 
+CREATE TABLE IF NOT EXISTS park(
+    id uuid
 );

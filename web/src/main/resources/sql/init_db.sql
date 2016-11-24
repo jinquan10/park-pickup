@@ -1,7 +1,7 @@
 -- Database: parkpickup
 
-CREATE DATABASE parkpickup
-    WITH 
+CREATE DATABASE IF NOT EXISTS parkpickup
+    WITH
     OWNER = postgres
     ENCODING = 'UTF8'
     LC_COLLATE = 'English_United States.1252'
