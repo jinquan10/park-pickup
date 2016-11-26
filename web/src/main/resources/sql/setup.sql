@@ -3,7 +3,7 @@ CREATE EXTENSION IF NOT EXISTS postgis;
 CREATE TABLE IF NOT EXISTS park(
     id bigint PRIMARY KEY,
     name text,
-    location GEOGRAPHY(POINT,4236)
+    location GEOGRAPHY(POINT,4326)
 );
 
 CREATE TABLE IF NOT EXISTS person(
@@ -15,3 +15,5 @@ CREATE TABLE IF NOT EXISTS rel_person_park(
     person_id text,
     park_id bigint
 );
+
+CREATE INDEX IF NOT EXISTS location_index ON park USING GIST (location);

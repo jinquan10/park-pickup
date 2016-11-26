@@ -5,6 +5,7 @@ import org.parkpickup.db.DataSourceFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.io.FileNotFoundException;
 import java.sql.SQLException;
@@ -20,7 +21,8 @@ public class DbCreation {
     @Inject
     private DataSourceFactory dataSourceFactory;
 
-    public JdbcTemplate initDb(String dbName, String owner) throws SQLException, FileNotFoundException {
+    @PostConstruct
+    public void initDb() throws SQLException, FileNotFoundException {
         boolean shouldInitDb = false;
 
         try {
@@ -36,7 +38,5 @@ public class DbCreation {
             String creationStatement = resourceUtil.getSqlStatementFromFile("sql/init_db.sql");
             new JdbcTemplate(dataSourceFactory.getDataSource(adminDb)).execute(creationStatement);
         }
-
-        return new JdbcTemplate(dataSourceFactory.getDataSource(appDbName));
     }
 }

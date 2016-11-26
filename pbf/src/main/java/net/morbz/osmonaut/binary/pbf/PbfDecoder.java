@@ -226,6 +226,7 @@ public class PbfDecoder {
 
 		executorService = Executors.newFixedThreadPool(workers);
 
+		Throwable e = null;
 		try {
 			// Process all blobs of data in the stream using threads from the
 			// executor service. We allow the decoder to issue an extra blob
@@ -234,13 +235,17 @@ public class PbfDecoder {
 			// The main thread is responsible for splitting blobs from the
 			// request stream, and sending decoded entities to the sink.
 			lock.lock();
-			try {
-				processBlobs(type);
-			} finally {
-				lock.unlock();
-			}
+			processBlobs(type);
+		} catch (Throwable e1) {
+			e = e1;
 		} finally {
-			executorService.shutdownNow();
+			try {
+				lock.unlock();
+				executorService.shutdownNow();
+			} catch (Throwable e2) {
+				e.addSuppressed(e2);
+				throw new RuntimeException(e);
+			}
 		}
 	}
 
