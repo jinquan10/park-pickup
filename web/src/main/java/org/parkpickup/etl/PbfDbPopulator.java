@@ -25,8 +25,6 @@ public class PbfDbPopulator implements IOsmonautReceiver {
 
     @Override
     public void foundEntity(Entity entity) {
-        System.out.println(entity.getTags().get("name") + ": " + entity.getCenter());
-
         LatLon latLon = entity.getCenter();
 
         seedOperations.addPark(entity.getId(),
