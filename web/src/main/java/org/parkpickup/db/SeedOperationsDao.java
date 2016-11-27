@@ -1,33 +1,32 @@
 package org.parkpickup.db;
 
-import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.parkpickup.ResourceUtil;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.FileNotFoundException;
+import java.sql.SQLException;
 
 @Component
 public class SeedOperationsDao implements SeedOperations {
-    private SimpleJdbcInsert parkInsertTemplate;
+    private String insertSql;
 
     @Inject
-    private DataSourceFactory dataSourceFactory;
+    private JdbcTemplate jdbcTemplate;
+
+    @Inject
+    private ResourceUtil resourceUtil;
 
     @PostConstruct
-    public void posstConstruct() {
-        parkInsertTemplate = new SimpleJdbcInsert(dataSourceFactory.getDataSource(DataSourceFactory.appDbName))
-                                .withTableName("park");
+    public void postConstruct() throws FileNotFoundException, SQLException {
+        insertSql = resourceUtil.getSqlStatementFromFile("sql/insert_park.sql");
     }
 
     @Override
     public void addPark(Long id, String name, Double lat, Double lng) {
-        Map<String, Object> parkRow = new HashMap<>();
-        parkRow.put("id", id);
-        parkRow.put("name", name);
-        parkRow.put("location", String.format("SetSRID(MakePoint(%s, %s), 4326)", lng, lat));
-
-        parkInsertTemplate.execute(parkRow);
+        System.out.println(String.format("addPark(): %s, %s, %s, %s", id, name, lat, lng));
+        jdbcTemplate.update(insertSql, id, name, String.format("SRID=4326;POINT(%s %s)", lat, lng));
     }
 }

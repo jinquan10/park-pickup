@@ -20,12 +20,9 @@ public class PersistenceInit {
     @Inject
     private DataSourceFactory dataSourceFactory;
 
-    @Inject
-    private JdbcTemplate jdbcTemplate;
-
     @PostConstruct
     public void postConstruct() throws FileNotFoundException, SQLException {
         String sqlStatement = resourceUtil.getSqlStatementFromFile("sql/setup.sql");
-        jdbcTemplate.execute(sqlStatement);
+        new JdbcTemplate(dataSourceFactory.getDataSource(DataSourceFactory.appDbName)).execute(sqlStatement);
     }
 }
