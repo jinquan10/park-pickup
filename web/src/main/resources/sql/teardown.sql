@@ -1,1 +1,2 @@
 DROP TABLE IF EXISTS park;
+DROP TABLE IF EXISTS rel_person_park;
