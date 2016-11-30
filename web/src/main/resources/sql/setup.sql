@@ -3,7 +3,7 @@ CREATE EXTENSION IF NOT EXISTS postgis;
 CREATE TABLE IF NOT EXISTS park(
     id bigint PRIMARY KEY,
     name text,
-    location geography(path,4326)
+    location geography(point,4326)
 );
 
 CREATE TABLE IF NOT EXISTS person(
