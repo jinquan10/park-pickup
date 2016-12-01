@@ -15,7 +15,7 @@ import java.util.List;
 
 @Component
 public class SeedOperationsDao implements SeedOperations {
-    private static final int batchSize = 500;
+    private static final int batchSize = 1000;
 
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 

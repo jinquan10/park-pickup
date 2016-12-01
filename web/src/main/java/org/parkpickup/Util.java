@@ -12,9 +12,9 @@ public class Util {
     public String createGeographyStringFromLatLng(double[] lats, double[] lngs) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < lats.length; i++) {
-            sb.append(lats[i]);
-            sb.append(" ");
             sb.append(lngs[i]);
+            sb.append(" ");
+            sb.append(lats[i]);
 
             if (i != lats.length - 1) {
                 sb.append(",");
