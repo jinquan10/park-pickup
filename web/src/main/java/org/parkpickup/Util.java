@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 @Component
 public class Util {
-    public String createGeographyStringFromLatLng(double[] lats, double[] lngs) {
+    public String createGeometryStringFromLatLng(double[] lats, double[] lngs) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < lats.length; i++) {
             sb.append(lngs[i]);
@@ -21,7 +21,7 @@ public class Util {
             }
         }
 
-        return "SRID=4326;LINESTRING(" + sb.toString() + ")";
+        return "POLYGON((" + sb.toString() + "))";
     }
 
     public String getSqlStatementFromFile(String sqlFilePath) throws FileNotFoundException, SQLException {

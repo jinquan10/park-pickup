@@ -28,7 +28,7 @@ public class PbfElementProcessor {
         List<Node> nodes = way.getNodes();
         int size = nodes.size();
 
-        // - if we have a closed linestring
+        // - if we have a closed loop
         if (nodes.get(0).getId() == nodes.get(size - 1).getId()) {
             double[] lats = new double[size];
             double[] lngs = new double[size];
@@ -64,8 +64,8 @@ public class PbfElementProcessor {
         }
 
         Bounds bounds = relation.getBounds();
-        double[] lats = new double[4];
-        double[] lngs = new double[4];
+        double[] lats = new double[5];
+        double[] lngs = new double[5];
 
         // - starting from top left clockwise
         lats[0] = bounds.getMinLat();
@@ -76,6 +76,8 @@ public class PbfElementProcessor {
         lngs[2] = bounds.getMaxLon();
         lats[3] = bounds.getMaxLat();
         lngs[3] = bounds.getMinLon();
+        lats[4] = lats[0];
+        lngs[4] = lngs[0];
 
         seedOperations.addPark(relation.getId(), relation.getTags().get("name"), lats, lngs);
     }

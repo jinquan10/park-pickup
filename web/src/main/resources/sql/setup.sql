@@ -3,7 +3,7 @@ CREATE EXTENSION IF NOT EXISTS postgis;
 CREATE TABLE IF NOT EXISTS park(
     id bigint PRIMARY KEY,
     name text,
-    location geography(linestring,4326)
+    location geometry(polygon)
 );
 
 CREATE TABLE IF NOT EXISTS bad_relation(

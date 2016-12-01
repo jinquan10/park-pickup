@@ -47,7 +47,7 @@ public class SeedOperationsDao implements SeedOperations {
         Object[] parkParams = new Object[3];
         parkParams[0] = id;
         parkParams[1] = name;
-        parkParams[2] = util.createGeographyStringFromLatLng(lats, lngs);
+        parkParams[2] = util.createGeometryStringFromLatLng(lats, lngs);
         batchArgs.add(parkParams);
 
         if (batchArgs.size() == batchSize) {
