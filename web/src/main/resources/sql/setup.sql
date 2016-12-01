@@ -6,6 +6,10 @@ CREATE TABLE IF NOT EXISTS park(
     location geography(linestring,4326)
 );
 
+CREATE TABLE IF NOT EXISTS bad_relation(
+    id bigint PRIMARY KEY
+);
+
 CREATE TABLE IF NOT EXISTS person(
     id text PRIMARY KEY, -- the MAC Address
     name text

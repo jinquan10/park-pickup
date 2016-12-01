@@ -15,10 +15,12 @@ import java.util.List;
 
 @Component
 public class SeedOperationsDao implements SeedOperations {
+    private static final int batchSize = 500;
+
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
-    private static final int batchSize = 500;
     private String insertSql;
+    private String insertBadRelationSql;
     private List<Object[]> batchArgs = new ArrayList<>(batchSize);
 
     @Inject
@@ -30,6 +32,7 @@ public class SeedOperationsDao implements SeedOperations {
     @PostConstruct
     public void postConstruct() throws FileNotFoundException, SQLException {
         insertSql = util.getSqlStatementFromFile("sql/insert_park.sql");
+        insertBadRelationSql = util.getSqlStatementFromFile("sql/insert_bad_relation.sql");
     }
 
     @Override
@@ -49,6 +52,16 @@ public class SeedOperationsDao implements SeedOperations {
             jdbcTemplate.batchUpdate(insertSql, batchArgs);
             batchArgs = new ArrayList<>(batchSize);
         }
+    }
+
+    @Override
+    public void addBadRelation(Long id) {
+        if (id == null) {
+            LOGGER.warn("relation id is null");
+            return;
+        }
+
+        jdbcTemplate.update(insertBadRelationSql, id);
     }
 
     @Override

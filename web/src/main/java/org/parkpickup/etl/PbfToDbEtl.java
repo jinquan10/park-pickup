@@ -28,5 +28,8 @@ public class PbfToDbEtl {
         Osmonaut naut = new Osmonaut(pbfDir, filter);
         naut.scan(osmonautReceiver);
         seedOperationsDao.flush();
+
+        // - process it again for relations that have leisure ways
+        // delete the way ids if they exist and use the relation's boundary
     }
 }
