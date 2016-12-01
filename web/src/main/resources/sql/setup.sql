@@ -10,6 +10,10 @@ CREATE TABLE IF NOT EXISTS bad_relation(
     id bigint PRIMARY KEY
 );
 
+CREATE TABLE IF NOT EXISTS bad_way(
+    id bigint PRIMARY KEY
+);
+
 CREATE TABLE IF NOT EXISTS person(
     id text PRIMARY KEY, -- the MAC Address
     name text

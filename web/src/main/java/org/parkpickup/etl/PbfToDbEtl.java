@@ -24,7 +24,7 @@ public class PbfToDbEtl {
     private String pbfDir;
 
     public void run() {
-        EntityFilter filter = new EntityFilter(false, true, false);
+        EntityFilter filter = new EntityFilter(false, true, true);
         Osmonaut naut = new Osmonaut(pbfDir, filter);
         naut.scan(osmonautReceiver);
         seedOperationsDao.flush();

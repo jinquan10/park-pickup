@@ -40,6 +40,8 @@ public class PbfElementProcessor {
             }
 
             seedOperations.addPark(way.getId(), way.getTags().get("name"), lats, lngs);
+        } else {
+            seedOperations.addBadWay(way.getId());
         }
     }
 

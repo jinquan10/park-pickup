@@ -21,6 +21,7 @@ public class SeedOperationsDao implements SeedOperations {
 
     private String insertSql;
     private String insertBadRelationSql;
+    private String insertBadWaySql;
     private List<Object[]> batchArgs = new ArrayList<>(batchSize);
 
     @Inject
@@ -33,6 +34,7 @@ public class SeedOperationsDao implements SeedOperations {
     public void postConstruct() throws FileNotFoundException, SQLException {
         insertSql = util.getSqlStatementFromFile("sql/insert_park.sql");
         insertBadRelationSql = util.getSqlStatementFromFile("sql/insert_bad_relation.sql");
+        insertBadWaySql = util.getSqlStatementFromFile("sql/insert_bad_way.sql");
     }
 
     @Override
@@ -62,6 +64,16 @@ public class SeedOperationsDao implements SeedOperations {
         }
 
         jdbcTemplate.update(insertBadRelationSql, id);
+    }
+
+    @Override
+    public void addBadWay(Long id) {
+        if (id == null) {
+            LOGGER.warn("way id is null");
+            return;
+        }
+
+        jdbcTemplate.update(insertBadWaySql, id);
     }
 
     @Override
