@@ -3,16 +3,19 @@ package org.parkpickup.etl;
 import net.morbz.osmonaut.IOsmonautReceiver;
 import net.morbz.osmonaut.osm.*;
 import org.parkpickup.db.SeedOperations;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
-import java.util.List;
 
 /**
  * Created by JZ on 11/22/2016.
  */
 @Component
 public class PbfDbPopulator implements IOsmonautReceiver {
+    private final Logger LOGGER = LoggerFactory.getLogger(getClass());
+
     @Inject
     private SeedOperations seedOperations;
 
@@ -35,29 +38,23 @@ public class PbfDbPopulator implements IOsmonautReceiver {
     public void foundEntity(Entity entity) {
         LatLon latLon = entity.getCenter();
 
-        if (entity instanceof Relation) {
-            Relation relation = (Relation)entity;
+        if (entity instanceof Way) {
+            Way way = (Way) entity;
 
-            List<RelationMember> members = relation.getMembers();
-
-            boolean hasPark = false;
-            boolean hasNo = false;
-            for (RelationMember member : members) {
-                if (member.getEntity().getTags().hasKeyValue("leisure", "park")) {
-                    hasPark = true;
-                }
-
-                if (!member.getEntity().getTags().hasKeyValue("leisure", "park")) {
-                    hasNo = true;
-                }
+            if (way.getNodes() == null) {
+                LOGGER.warn("Way nodes is empty. way id: {}", way.getId());
+                return;
             }
 
-            if (hasPark && hasNo) {
-                seedOperations.addPark(entity.getId(),
-                        entity.getTags().get("name"),
-                        latLon.getLat(),
-                        latLon.getLon());
-            }
+            int size = way.getNodes().
+            way.getNodes()
+        } else if (entity instanceof Relation) {
+
         }
+
+        seedOperations.addPark(entity.getId(),
+                entity.getTags().get("name"),
+                latLon.getLat(),
+                latLon.getLon());
     }
 }

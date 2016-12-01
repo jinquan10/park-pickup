@@ -8,7 +8,22 @@ import java.sql.SQLException;
 import java.util.Scanner;
 
 @Component
-public class ResourceUtil {
+public class Util {
+    public String createGeographyStringFromLatLng(double[] lats, double[] lngs) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < lats.length; i++) {
+            sb.append(lats[i]);
+            sb.append(" ");
+            sb.append(lngs[i]);
+
+            if (i != lats.length - 1) {
+                sb.append(",");
+            }
+        }
+
+        return "SRID=4326;LINESTRING(" + sb.toString() + ")";
+    }
+
     public String getSqlStatementFromFile(String sqlFilePath) throws FileNotFoundException, SQLException {
         ClassLoader classLoader = getClass().getClassLoader();
         File file = new File(classLoader.getResource(sqlFilePath).getFile());

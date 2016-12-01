@@ -1,6 +1,6 @@
 package org.parkpickup.db.init;
 
-import org.parkpickup.ResourceUtil;
+import org.parkpickup.Util;
 import org.parkpickup.db.DataSourceFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.DependsOn;
@@ -16,7 +16,7 @@ import java.sql.SQLException;
 @DependsOn("dbCreation")
 public class PersistenceInit {
     @Inject
-    private ResourceUtil resourceUtil;
+    private Util util;
 
     @Inject
     private DataSourceFactory dataSourceFactory;
@@ -26,8 +26,8 @@ public class PersistenceInit {
 
     @PostConstruct
     public void postConstruct() throws FileNotFoundException, SQLException {
-        String setupStatement = resourceUtil.getSqlStatementFromFile("sql/setup.sql");
-        String teardownStatement = resourceUtil.getSqlStatementFromFile("sql/teardown.sql");
+        String setupStatement = util.getSqlStatementFromFile("sql/setup.sql");
+        String teardownStatement = util.getSqlStatementFromFile("sql/teardown.sql");
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSourceFactory.getDataSource(DataSourceFactory.appDbName));
 
         if (isTeardown) {

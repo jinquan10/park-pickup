@@ -1,6 +1,6 @@
 package org.parkpickup.db.init;
 
-import org.parkpickup.ResourceUtil;
+import org.parkpickup.Util;
 import org.parkpickup.db.DataSourceFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
@@ -16,7 +16,7 @@ import static org.parkpickup.db.DataSourceFactory.appDbName;
 @Component
 public class DbCreation {
     @Inject
-    private ResourceUtil resourceUtil;
+    private Util util;
 
     @Inject
     private DataSourceFactory dataSourceFactory;
@@ -35,7 +35,7 @@ public class DbCreation {
         }
 
         if (shouldInitDb) {
-            String creationStatement = resourceUtil.getSqlStatementFromFile("sql/init_db.sql");
+            String creationStatement = util.getSqlStatementFromFile("sql/init_db.sql");
             new JdbcTemplate(dataSourceFactory.getDataSource(adminDb)).execute(creationStatement);
         }
     }
