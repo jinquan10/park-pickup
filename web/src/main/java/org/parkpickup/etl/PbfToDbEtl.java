@@ -9,9 +9,6 @@ import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
 
-/**
- * Created by JZ on 11/22/2016.
- */
 @Component
 public class PbfToDbEtl {
     @Inject
