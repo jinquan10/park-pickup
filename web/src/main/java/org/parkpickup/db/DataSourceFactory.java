@@ -10,6 +10,7 @@ public class DataSourceFactory {
     public static final String appDbName = "parkpickup";
     public static final String adminUser = "postgres";
     public static final String adminDb = "postgres";
+    // TODO move to env
     public static final String adminPassword = "parkpickup2016";
 
     public DataSource getDataSource(String dbName) {
