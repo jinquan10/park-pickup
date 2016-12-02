@@ -11,6 +11,12 @@ import java.sql.SQLException;
 
 @Configuration
 public class AppConfig {
+
+    // TODO TTL for person at a park.
+    // Should have a thread check TTL < x minutes so that it can clear the person from park
+    // Update the TTL whenever we receive a person update
+
+    // TODO Query for nearest parks within radius from lat/lng and return people who are there, if any
     public static void main(String[] args) throws FileNotFoundException, SQLException {
         ApplicationContext ctx = new AnnotationConfigApplicationContext(Application.class);
         PbfToDbEtl pbfToDbEtl = ctx.getBean(PbfToDbEtl.class);
