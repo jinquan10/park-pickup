@@ -8,5 +8,3 @@ CREATE DATABASE parkpickup
     LC_CTYPE = 'English_United States.1252'
     TABLESPACE = pg_default
     CONNECTION LIMIT = -1;
-
-    -- TODO for testing CREATE DATABASE newdb WITH TEMPLATE originaldb OWNER dbuser;

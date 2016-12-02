@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS person(
 );
 
 CREATE TABLE IF NOT EXISTS rel_person_park(
-    person_id text,
+    person_id text PRIMARY KEY,
     park_id bigint
 );
 
