@@ -38,16 +38,16 @@ public class Park {
     }
 
     public static class Present {
-        private final Long personId;
+        private final Long deviceId;
         private final Long lastModified;
 
-        public Present(Long personId, Long lastModified) {
-            this.personId = personId;
+        public Present(Long deviceId, Long lastModified) {
+            this.deviceId = deviceId;
             this.lastModified = lastModified;
         }
 
-        public Long getPersonId() {
-            return personId;
+        public Long getDeviceId() {
+            return deviceId;
         }
 
         public Long getLastModified() {
