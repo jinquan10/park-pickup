@@ -26,10 +26,10 @@ public class PersistenceInit {
 
     @PostConstruct
     public void postConstruct() throws FileNotFoundException, SQLException {
-        String setupStatement = util.getSqlStatementFromFile("sql/setup.sql");
-        String setupFunctionsStatement = util.getSqlStatementFromFile("sql/setup_functions.sql");
-        String teardownStatement = util.getSqlStatementFromFile("sql/teardown.sql");
-        String tearndownFunctionsStatement = util.getSqlStatementFromFile("sql/teardown_functions.sql");
+        String setupStatement = util.getSqlStatementFromFile("sql/tables/setup.sql");
+        String setupFunctionsStatement = util.getSqlStatementFromFile("sql/functions/setup_functions.sql");
+        String teardownStatement = util.getSqlStatementFromFile("sql/tables/teardown.sql");
+        String tearndownFunctionsStatement = util.getSqlStatementFromFile("sql/functions/teardown_functions.sql");
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSourceFactory.getDataSource(DataSourceFactory.appDbName));
 
         if (isTeardown) {

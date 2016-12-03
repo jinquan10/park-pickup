@@ -32,9 +32,9 @@ public class SeedOperationsDao implements SeedOperations {
 
     @PostConstruct
     public void postConstruct() throws FileNotFoundException, SQLException {
-        insertSql = util.getSqlStatementFromFile("sql/insert_park.sql");
-        insertBadRelationSql = util.getSqlStatementFromFile("sql/insert_bad_relation.sql");
-        insertBadWaySql = util.getSqlStatementFromFile("sql/insert_bad_way.sql");
+        insertSql = util.getSqlStatementFromFile("sql/insert/insert_park.sql");
+        insertBadRelationSql = util.getSqlStatementFromFile("sql/insert/insert_bad_relation.sql");
+        insertBadWaySql = util.getSqlStatementFromFile("sql/insert/insert_bad_way.sql");
     }
 
     @Override
