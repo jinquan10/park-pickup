@@ -1,1 +1,1 @@
-DROP FUNCTION update_person_location(text,real,real);
+DROP FUNCTION IF EXISTS update_person_location(text,real,real);
