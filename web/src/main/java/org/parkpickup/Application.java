@@ -5,6 +5,12 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * TODO
+ * 1. Player TTL at park
+ * 2.
+ */
+
 @Configuration
 @EnableAutoConfiguration
 @ComponentScan

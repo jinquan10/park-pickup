@@ -20,8 +20,10 @@ CREATE TABLE IF NOT EXISTS person(
 );
 
 CREATE TABLE IF NOT EXISTS rel_person_park(
-    person_id text PRIMARY KEY,
-    park_id bigint
+    device_id text PRIMARY KEY,
+    park_id bigint,
+    last_updated bigint
 );
 
 CREATE INDEX IF NOT EXISTS location_index ON park USING GIST (location);
+CREATE INDEX IF NOT EXISTS last_updated_index ON rel_person_park (last_updated);

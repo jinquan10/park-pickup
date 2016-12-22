@@ -1,17 +1,18 @@
 package org.parkpickup.db;
 
+import java.io.FileNotFoundException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
+
 import org.parkpickup.Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.PostConstruct;
-import javax.inject.Inject;
-import java.io.FileNotFoundException;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 public class SeedOperationsDao implements SeedOperations {
@@ -37,6 +38,16 @@ public class SeedOperationsDao implements SeedOperations {
         insertBadWaySql = util.getSqlStatementFromFile("sql/insert/insert_bad_way.sql");
     }
 
+    /**
+     * Creates a PostGIS polygon using lat/lngs
+     *
+     * Batches up the inserts
+     *
+     * @param id
+     * @param name
+     * @param lats
+     * @param lngs
+     */
     @Override
     public void addPark(Long id, String name, double[] lats, double[] lngs) {
         if (id == null) {
