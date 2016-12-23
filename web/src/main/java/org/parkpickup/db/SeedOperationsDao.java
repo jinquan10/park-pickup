@@ -1,21 +1,17 @@
 package org.parkpickup.db;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
 import java.io.FileNotFoundException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-import javax.inject.Inject;
-
-import org.parkpickup.Util;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Component;
-
 @Component
-public class SeedOperationsDao implements SeedOperations {
+public class SeedOperationsDao extends BaseDao implements SeedOperations {
     private static final int batchSize = 1000;
 
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
@@ -24,12 +20,6 @@ public class SeedOperationsDao implements SeedOperations {
     private String insertBadRelationSql;
     private String insertBadWaySql;
     private List<Object[]> batchArgs = new ArrayList<>(batchSize);
-
-    @Inject
-    private JdbcTemplate jdbcTemplate;
-
-    @Inject
-    private Util util;
 
     @PostConstruct
     public void postConstruct() throws FileNotFoundException, SQLException {
