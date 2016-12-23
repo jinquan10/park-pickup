@@ -21,11 +21,14 @@ import org.springframework.stereotype.Component;
 @Component
 @DependsOn("persistenceInit")
 public class PbfToDbEtl {
-    @Value("${pbfDir}")
-    private String pbfDir;
+    @Value("${pbfSingleDir}")
+    private String pbfSingleDir;
 
-    @Value("${teardown}")
-    private boolean isTeardown;
+    @Value("${teardown.tables}")
+    private boolean isTeardownTables;
+
+    @Value("${populate.seeds}")
+    private boolean isPopulateSeeds;
 
     @Inject
     private IOsmonautReceiver osmonautReceiver;
@@ -41,8 +44,11 @@ public class PbfToDbEtl {
 
     @PostConstruct
     public void postConstruct() throws FileNotFoundException, SQLException {
-        if (isTeardown) {
+        if (isTeardownTables) {
             run();
+        }
+
+        if (isPopulateSeeds) {
             JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSourceFactory.getDataSource(DataSourceFactory.appDbName));
             String insertSetupStatement = util.getSqlStatementFromFile("sql/insert/setup.sql");
             jdbcTemplate.execute(insertSetupStatement);
@@ -51,7 +57,7 @@ public class PbfToDbEtl {
 
     public void run() {
         EntityFilter filter = new EntityFilter(false, true, true);
-        Osmonaut naut = new Osmonaut(pbfDir, filter);
+        Osmonaut naut = new Osmonaut(pbfSingleDir, filter);
         naut.scan(osmonautReceiver);
         seedOperationsDao.flush();
 
