@@ -1,17 +1,12 @@
 package org.parkpickup.etl;
 
-import javax.inject.Inject;
-
 import net.morbz.osmonaut.IOsmonautReceiver;
-import net.morbz.osmonaut.osm.Entity;
-import net.morbz.osmonaut.osm.EntityType;
-import net.morbz.osmonaut.osm.Relation;
-import net.morbz.osmonaut.osm.Tags;
-import net.morbz.osmonaut.osm.Way;
-
+import net.morbz.osmonaut.osm.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+
+import javax.inject.Inject;
 
 @Component
 public class PbfReceiver implements IOsmonautReceiver {

@@ -1,23 +1,16 @@
 package org.parkpickup.etl;
 
-import static net.morbz.osmonaut.osm.EntityType.WAY;
-
-import java.util.List;
-
-import javax.inject.Inject;
-
 import net.morbz.osmonaut.geometry.Bounds;
-import net.morbz.osmonaut.osm.Entity;
-import net.morbz.osmonaut.osm.LatLon;
-import net.morbz.osmonaut.osm.Node;
-import net.morbz.osmonaut.osm.Relation;
-import net.morbz.osmonaut.osm.RelationMember;
-import net.morbz.osmonaut.osm.Way;
-
+import net.morbz.osmonaut.osm.*;
 import org.parkpickup.db.SeedOperations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+
+import javax.inject.Inject;
+import java.util.List;
+
+import static net.morbz.osmonaut.osm.EntityType.WAY;
 
 @Component
 public class PbfElementProcessor {

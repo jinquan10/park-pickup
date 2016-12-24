@@ -10,9 +10,6 @@ import javax.inject.Inject;
 import java.io.FileNotFoundException;
 import java.sql.SQLException;
 
-import static org.parkpickup.db.DataSourceFactory.adminDb;
-import static org.parkpickup.db.DataSourceFactory.appDbName;
-
 @Component
 public class DbCreation {
     @Inject
@@ -27,7 +24,7 @@ public class DbCreation {
 
         try {
             // - test the connection to db
-            dataSourceFactory.getDataSource(appDbName).getConnection();
+            dataSourceFactory.getDataSource(DataSourceFactory.appDbName).getConnection();
         } catch (SQLException e) {
             if (e.getMessage().contains("does not exist")) {
                 shouldInitDb = true;
@@ -36,7 +33,7 @@ public class DbCreation {
 
         if (shouldInitDb) {
             String creationStatement = util.getSqlStatementFromFile("sql/init_db.sql");
-            new JdbcTemplate(dataSourceFactory.getDataSource(adminDb)).execute(creationStatement);
+            new JdbcTemplate(dataSourceFactory.getDataSource(DataSourceFactory.adminDb)).execute(creationStatement);
         }
     }
 }

@@ -1,11 +1,11 @@
 package org.parkpickup;
 
+import org.springframework.stereotype.Component;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.sql.SQLException;
 import java.util.Scanner;
-
-import org.springframework.stereotype.Component;
 
 @Component
 public class Util {

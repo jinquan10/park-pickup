@@ -1,13 +1,13 @@
 package org.parkpickup.config;
 
+import org.springframework.core.io.ClassPathResource;
+
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
 import java.util.List;
 import java.util.Properties;
 import java.util.Scanner;
-
-import org.springframework.core.io.ClassPathResource;
 
 public class AppProp {
     private String env;
