@@ -1,22 +1,19 @@
 package org.parkpickup.etl;
 
-import java.io.FileNotFoundException;
-import java.sql.SQLException;
-
-import javax.annotation.PostConstruct;
-import javax.inject.Inject;
-
 import net.morbz.osmonaut.EntityFilter;
 import net.morbz.osmonaut.IOsmonautReceiver;
 import net.morbz.osmonaut.Osmonaut;
-
 import org.parkpickup.Util;
 import org.parkpickup.db.DataSourceFactory;
 import org.parkpickup.db.SeedOperationsDao;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.DependsOn;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
+import java.io.FileNotFoundException;
+import java.sql.SQLException;
 
 @Component
 @DependsOn("persistenceInit")
@@ -26,9 +23,6 @@ public class PbfToDbEtl {
 
     @Value("${teardown.tables}")
     private boolean isTeardownTables;
-
-    @Value("${populate.seeds}")
-    private boolean isPopulateSeeds;
 
     @Inject
     private IOsmonautReceiver osmonautReceiver;
@@ -46,12 +40,6 @@ public class PbfToDbEtl {
     public void postConstruct() throws FileNotFoundException, SQLException {
         if (isTeardownTables) {
             run();
-        }
-
-        if (isPopulateSeeds) {
-            JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSourceFactory.getDataSource(DataSourceFactory.appDbName));
-            String insertSetupStatement = util.getSqlStatementFromFile("sql/insert/setup.sql");
-            jdbcTemplate.execute(insertSetupStatement);
         }
     }
 

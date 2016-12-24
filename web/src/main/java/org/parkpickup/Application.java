@@ -1,18 +1,17 @@
 package org.parkpickup;
 
-import java.io.IOException;
-import java.util.Properties;
-
 import org.parkpickup.config.AppProp;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import java.io.IOException;
+import java.util.Properties;
+
 /**
  * TODO
- * 1. Player TTL at park
- * 2. property configuration
+ *
  */
 
 @SpringBootApplication
