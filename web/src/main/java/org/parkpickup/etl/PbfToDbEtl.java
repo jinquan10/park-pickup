@@ -21,8 +21,8 @@ public class PbfToDbEtl {
     @Value("${pbfSingleDir}")
     private String pbfSingleDir;
 
-    @Value("${teardown.tables}")
-    private boolean isTeardownTables;
+    @Value("${teardown.tables.all}")
+    private boolean isTeardownAllTables;
 
     @Inject
     private IOsmonautReceiver osmonautReceiver;
@@ -38,7 +38,7 @@ public class PbfToDbEtl {
 
     @PostConstruct
     public void postConstruct() throws FileNotFoundException, SQLException {
-        if (isTeardownTables) {
+        if (isTeardownAllTables) {
             run();
         }
     }
