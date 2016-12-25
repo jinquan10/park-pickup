@@ -24,7 +24,7 @@ public class ParkPickupControllerV1 implements ParkPickupV1 {
 
     @Override
     @ResponseStatus(HttpStatus.OK)
-    @RequestMapping(method = PUT, path = updateLocationPath)
+    @RequestMapping(method = PUT, path = updateLocationPath, consumes = "application/json")
     public void updateLocation(@PathVariable String deviceId, @RequestBody @Valid Location location) {
         parkPickupDao.updateLocation(deviceId, location.lat, location.lng);
     }

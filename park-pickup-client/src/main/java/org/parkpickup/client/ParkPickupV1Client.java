@@ -20,8 +20,8 @@ public class ParkPickupV1Client implements ParkPickupV1 {
 
         try {
             URL updateLocationUrl = new URL(clientEnv.getProtocol(), clientEnv.getDomain(), clientEnv.getPort(), path);
-
             HttpURLConnection httpUrlConnection = (HttpURLConnection) updateLocationUrl.openConnection();
+            httpUrlConnection.setRequestProperty("Content-Type", "application/json");
             httpUrlConnection.setDoOutput(true);
             httpUrlConnection.setRequestMethod("PUT");
             OutputStreamWriter out = new OutputStreamWriter(httpUrlConnection.getOutputStream());
