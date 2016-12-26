@@ -8,7 +8,6 @@ import org.parkpickup.api.exception.RequestFailedException;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
@@ -33,8 +32,8 @@ public class ParkPickupV1Client implements ParkPickupV1 {
             out.close();
 
             sendRequest(httpUrlConnection, 200);
-        } catch (MalformedURLException e) {
-        } catch (IOException e) {
+        } catch (Throwable e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -57,9 +56,8 @@ public class ParkPickupV1Client implements ParkPickupV1 {
             sendRequest(httpUrlConnection, 200);
 
             return Arrays.asList(OBJECT_MAPPER.readValue(Util.readFromInputStream(httpUrlConnection.getInputStream()), Park[].class));
-        } catch (IOException e) {
+        } catch (Throwable e) {
+            throw new RuntimeException(e);
         }
-
-        return null;
     }
 }

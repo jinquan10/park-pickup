@@ -5,7 +5,7 @@ import java.lang.management.RuntimeMXBean;
 import java.util.List;
 
 public enum ClientEnv {
-    TEST("api", "localhost", 8080);
+    TEST("http", "localhost", 8080);
 
     private String protocol;
     private String domain;
