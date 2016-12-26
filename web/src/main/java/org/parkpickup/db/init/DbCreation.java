@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.SQLException;
 
 @Component
@@ -19,7 +19,7 @@ public class DbCreation {
     private DataSourceFactory dataSourceFactory;
 
     @PostConstruct
-    public void initDb() throws SQLException, FileNotFoundException {
+    public void initDb() throws SQLException, IOException {
         boolean shouldInitDb = false;
 
         try {

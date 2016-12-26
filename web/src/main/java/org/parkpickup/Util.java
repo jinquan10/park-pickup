@@ -2,10 +2,11 @@ package org.parkpickup;
 
 import org.springframework.stereotype.Component;
 
+import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Scanner;
 
 @Component
 public class Util {
@@ -24,21 +25,19 @@ public class Util {
         return "POLYGON((" + sb.toString() + "))";
     }
 
-    public String getSqlStatementFromFile(String sqlFilePath) throws FileNotFoundException, SQLException {
+    public String getSqlStatementFromFile(String sqlFilePath) throws IOException, SQLException {
         ClassLoader classLoader = getClass().getClassLoader();
         File file = new File(classLoader.getResource(sqlFilePath).getFile());
 
         StringBuilder sb = new StringBuilder();
-        Scanner scanner = new Scanner(file);
-        while (scanner.hasNextLine()) {
-            String line = scanner.nextLine();
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+        String line = null;
+        while ((line = bufferedReader.readLine()) != null) {
             sb.append(line).append("\n");
         }
 
-        scanner.close();
+        bufferedReader.close();
 
         return sb.toString();
     }
-
-
 }

@@ -1,21 +1,25 @@
 package org.parkpickup.db;
 
+import org.parkpickup.api.Park;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Component
 public class ParkPickupDaoImpl extends BaseDao implements ParkPickupDao {
     private SimpleJdbcCall updatePersonLocation;
+    private String getPopulatedParksSql;
 
     @PostConstruct
-    public void postConstruct() throws FileNotFoundException, SQLException {
+    public void postConstruct() throws IOException, SQLException {
         this.updatePersonLocation = new SimpleJdbcCall(jdbcTemplate).withFunctionName("update_person_location");
+        this.getPopulatedParksSql = util.getSqlStatementFromFile("sql/query/query_nearby_populated_parks.sql");
     }
 
     @Override
@@ -25,5 +29,10 @@ public class ParkPickupDaoImpl extends BaseDao implements ParkPickupDao {
         args.put("lat", lat);
         args.put("lng", lng);
         updatePersonLocation.executeFunction(Void.class, args);
+    }
+
+    @Override
+    public List<Park> getPopulatedParks(double lat, double lng, int radiusMeters) {
+        return jdbcTemplate.queryForList(getPopulatedParksSql, new Object[]{lng, lat, radiusMeters}, Park.class);
     }
 }

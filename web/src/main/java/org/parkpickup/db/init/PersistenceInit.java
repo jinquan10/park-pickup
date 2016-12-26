@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.SQLException;
 
 @Component
@@ -28,7 +28,7 @@ public class PersistenceInit {
     private boolean isTeardownDynamicTables;
 
     @PostConstruct
-    public void postConstruct() throws FileNotFoundException, SQLException {
+    public void postConstruct() throws IOException, SQLException {
         String setupStatement = util.getSqlStatementFromFile("sql/tables/setup.sql");
         String setupFunctionsStatement = util.getSqlStatementFromFile("sql/functions/setup_functions.sql");
         String teardownAllTablesSql = util.getSqlStatementFromFile("sql/tables/teardown_all.sql");

@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,7 @@ public class SeedOperationsDao extends BaseDao implements SeedOperations {
     private List<Object[]> batchArgs = new ArrayList<>(batchSize);
 
     @PostConstruct
-    public void postConstruct() throws FileNotFoundException, SQLException {
+    public void postConstruct() throws IOException, SQLException {
         insertSql = util.getSqlStatementFromFile("sql/insert/insert_park.sql");
         insertBadRelationSql = util.getSqlStatementFromFile("sql/insert/insert_bad_relation.sql");
         insertBadWaySql = util.getSqlStatementFromFile("sql/insert/insert_bad_way.sql");

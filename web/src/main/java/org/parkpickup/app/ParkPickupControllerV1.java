@@ -7,15 +7,13 @@ import org.parkpickup.db.ParkPickupDao;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
-import java.util.Set;
+import java.util.List;
 
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
 @Component
@@ -32,7 +30,9 @@ public class ParkPickupControllerV1 implements ParkPickupV1 {
     }
 
     @Override
-    public Set<Park> getPopulatedParks(double lat, double lng, int radiusMeters) {
-        return null;
+    @ResponseStatus(HttpStatus.OK)
+    @RequestMapping(method = GET, path = getPopulatedParksPath, produces = "application/json")
+    public List<Park> getPopulatedParks(@RequestParam double lat, @RequestParam double lng, @RequestParam int radiusMeters) {
+        return parkPickupDao.getPopulatedParks(lat, lng, radiusMeters);
     }
 }
