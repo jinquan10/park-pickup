@@ -1,4 +1,4 @@
-package org.parkpickup.http;
+package org.parkpickup.api;
 
 public class Location {
     public final Double lat;

@@ -1,9 +1,9 @@
 package org.parkpickup.client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.parkpickup.http.Location;
-import org.parkpickup.http.ParkPickupV1;
-import org.parkpickup.http.exception.RequestFailedException;
+import org.parkpickup.api.Location;
+import org.parkpickup.api.ParkPickupV1;
+import org.parkpickup.api.exception.RequestFailedException;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;

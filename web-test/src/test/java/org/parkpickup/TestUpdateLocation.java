@@ -1,9 +1,9 @@
 package org.parkpickup;
 
 import org.junit.Test;
+import org.parkpickup.api.Location;
+import org.parkpickup.api.exception.RequestFailedException;
 import org.parkpickup.client.ParkPickupV1Client;
-import org.parkpickup.http.Location;
-import org.parkpickup.http.exception.RequestFailedException;
 
 import java.util.UUID;
 

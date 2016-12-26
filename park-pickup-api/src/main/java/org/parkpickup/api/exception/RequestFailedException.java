@@ -1,4 +1,4 @@
-package org.parkpickup.http.exception;
+package org.parkpickup.api.exception;
 
 public class RequestFailedException extends Exception {
 }
