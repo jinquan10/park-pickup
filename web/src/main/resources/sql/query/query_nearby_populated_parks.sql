@@ -1,7 +1,8 @@
 SELECT
   park.id,
   park.name,
-  park.location,
+  park.centerLat,
+  park.centerLng,
   rel_person_park.device_id,
   person.name
 FROM park
