@@ -24,8 +24,27 @@ public class TestUpdateLocation {
 
         client.updateLocation(deviceId, location);
         Collection<Park> populatedParks = client.getPopulatedParks(location.lat, location.lng, 1500);
+
         assertNotNull(populatedParks);
 
+        Park populatedPark = getExpectedPark(containsParkName, populatedParks);
+        assertNotNull(populatedPark);
+
+        boolean foundPerson = findPersonInPark(deviceId, populatedPark);
+        assertTrue(foundPerson);
+    }
+
+    private boolean findPersonInPark(String deviceId, Park populatedPark) {
+        boolean foundPerson = false;
+        for (Person person : populatedPark.playingNow) {
+            if (deviceId.equals(person.id)) {
+                foundPerson = true;
+            }
+        }
+        return foundPerson;
+    }
+
+    private Park getExpectedPark(String containsParkName, Collection<Park> populatedParks) {
         Park populatedPark = null;
         for (Park park : populatedParks) {
             if (park.displayName.contains(containsParkName)) {
@@ -33,14 +52,6 @@ public class TestUpdateLocation {
                 break;
             }
         }
-
-        boolean foundPerson = false;
-        for (Person person : populatedPark.playingNow) {
-            if (deviceId.equals(person.id)) {
-                foundPerson = true;
-            }
-        }
-
-        assertTrue(foundPerson);
+        return populatedPark;
     }
 }
