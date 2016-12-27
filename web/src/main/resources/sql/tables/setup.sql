@@ -3,7 +3,9 @@ CREATE EXTENSION IF NOT EXISTS postgis;
 CREATE TABLE IF NOT EXISTS park(
     id bigint PRIMARY KEY,
     name text,
-    location geometry(polygon)
+    location geometry(polygon),
+    centerLat real,
+    centerLng real
 );
 
 CREATE TABLE IF NOT EXISTS bad_relation(

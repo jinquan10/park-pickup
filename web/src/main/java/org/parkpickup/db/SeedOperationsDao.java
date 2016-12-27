@@ -39,16 +39,18 @@ public class SeedOperationsDao extends BaseDao implements SeedOperations {
      * @param lngs
      */
     @Override
-    public void addPark(Long id, String name, double[] lats, double[] lngs) {
+    public void addPark(Long id, String name, double[] lats, double[] lngs, double centerLat, double centerLng) {
         if (id == null) {
             LOGGER.warn("id is null.  park name: {}", name);
             return;
         }
 
-        Object[] parkParams = new Object[3];
+        Object[] parkParams = new Object[5];
         parkParams[0] = id;
         parkParams[1] = name;
         parkParams[2] = util.createGeometryStringFromLatLng(lats, lngs);
+        parkParams[3] = centerLat;
+        parkParams[4] = centerLng;
         batchArgs.add(parkParams);
 
         if (batchArgs.size() == batchSize) {

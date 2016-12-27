@@ -43,7 +43,8 @@ public class PbfElementProcessor {
                 lngs[i] = latlon.getLon();
             }
 
-            seedOperations.addPark(way.getId(), way.getTags().get("name"), lats, lngs);
+            LatLon latLon = way.getCenter();
+            seedOperations.addPark(way.getId(), way.getTags().get("name"), lats, lngs, latLon.getLat(), latLon.getLon());
         } else {
             seedOperations.addBadWay(way.getId());
         }
@@ -84,6 +85,7 @@ public class PbfElementProcessor {
         lats[4] = lats[0];
         lngs[4] = lngs[0];
 
-        seedOperations.addPark(relation.getId(), relation.getTags().get("name"), lats, lngs);
+        LatLon latLon = relation.getCenter();
+        seedOperations.addPark(relation.getId(), relation.getTags().get("name"), lats, lngs, latLon.getLat(), latLon.getLon());
     }
 }
