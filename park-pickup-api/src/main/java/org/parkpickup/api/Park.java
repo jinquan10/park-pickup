@@ -4,15 +4,13 @@ import java.util.Set;
 
 public class Park {
     public final long id;
-    public final double lat;
-    public final double lng;
+    public final Object location;
     public final String displayName;
     public final Set<Person> playingNow;
 
-    public Park(long id, double lat, double lng, String displayName, Set<Person> playingNow) {
+    public Park(long id, Object location, String displayName, Set<Person> playingNow) {
         this.id = id;
-        this.lat = lat;
-        this.lng = lng;
+        this.location = location;
         this.displayName = displayName;
         this.playingNow = playingNow;
     }

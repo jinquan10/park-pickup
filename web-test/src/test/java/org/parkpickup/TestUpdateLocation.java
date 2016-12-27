@@ -8,10 +8,10 @@ import org.parkpickup.api.exception.RequestFailedException;
 import org.parkpickup.client.ParkPickupV1Client;
 
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class TestUpdateLocation {
     private static final ParkPickupV1Client client = new ParkPickupV1Client();
@@ -25,17 +25,22 @@ public class TestUpdateLocation {
         client.updateLocation(deviceId, location);
         List<Park> populatedParks = client.getPopulatedParks(location.lat, location.lng, 1500);
         assertNotNull(populatedParks);
-        assertEquals(1, populatedParks.size());
 
-        Park expectedPark = populatedParks.get(0);
-        assertTrue(expectedPark.displayName.contains(containsParkName));
-
-        Set<Person> playingPeople = expectedPark.playingNow;
-        assertNotNull(playingPeople);
-        assertEquals(1, playingPeople.size());
-
-        for (Person person : playingPeople) {
-            assertEquals(deviceId, person.id);
+        Park populatedPark = null;
+        for (Park park : populatedParks) {
+            if (park.displayName.contains(containsParkName)) {
+                populatedPark = park;
+                break;
+            }
         }
+
+        boolean foundPerson = false;
+        for (Person person : populatedPark.playingNow) {
+            if (deviceId.equals(person.displayName)) {
+                foundPerson = true;
+            }
+        }
+
+        assertTrue(foundPerson);
     }
 }

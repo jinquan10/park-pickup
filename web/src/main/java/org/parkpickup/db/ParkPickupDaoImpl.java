@@ -33,6 +33,10 @@ public class ParkPickupDaoImpl extends BaseDao implements ParkPickupDao {
 
     @Override
     public List<Park> getPopulatedParks(double lat, double lng, int radiusMeters) {
-        return jdbcTemplate.queryForList(getPopulatedParksSql, new Object[]{lng, lat, radiusMeters}, Park.class);
+        String point = String.format("SRID=4326;POINT(%s %s)", lng, lat);
+        List<Map<String, Object>> result = jdbcTemplate.queryForList(getPopulatedParksSql, new Object[]{point, radiusMeters});
+        System.out.println("");
+
+        return null;
     }
 }
