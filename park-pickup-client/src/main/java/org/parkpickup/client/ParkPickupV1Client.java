@@ -55,7 +55,9 @@ public class ParkPickupV1Client implements ParkPickupV1 {
 
             sendRequest(httpUrlConnection, 200);
 
-            return Arrays.asList(OBJECT_MAPPER.readValue(Util.readFromInputStream(httpUrlConnection.getInputStream()), Park[].class));
+            String resultJsonString = Util.readFromInputStream(httpUrlConnection.getInputStream());
+            Park[] parks = OBJECT_MAPPER.readValue(resultJsonString, Park[].class);
+            return Arrays.asList(parks);
         } catch (Throwable e) {
             throw new RuntimeException(e);
         }
