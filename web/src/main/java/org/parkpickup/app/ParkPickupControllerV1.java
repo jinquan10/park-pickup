@@ -30,6 +30,7 @@ public class ParkPickupControllerV1 implements ParkPickupV1 {
     }
 
     @Override
+    @ResponseBody
     @ResponseStatus(HttpStatus.OK)
     @RequestMapping(method = GET, path = getPopulatedParksPath, produces = "application/json")
     public Collection<Park> getPopulatedParks(@RequestParam double lat, @RequestParam double lng, @RequestParam int radiusMeters) {

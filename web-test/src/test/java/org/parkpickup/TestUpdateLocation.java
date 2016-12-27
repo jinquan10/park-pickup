@@ -36,7 +36,7 @@ public class TestUpdateLocation {
 
         boolean foundPerson = false;
         for (Person person : populatedPark.playingNow) {
-            if (deviceId.equals(person.displayName)) {
+            if (deviceId.equals(person.id)) {
                 foundPerson = true;
             }
         }
