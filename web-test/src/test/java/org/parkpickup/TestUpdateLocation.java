@@ -7,7 +7,7 @@ import org.parkpickup.api.Person;
 import org.parkpickup.api.exception.RequestFailedException;
 import org.parkpickup.client.ParkPickupV1Client;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.UUID;
 
 import static org.junit.Assert.assertNotNull;
@@ -23,7 +23,7 @@ public class TestUpdateLocation {
         String containsParkName = "Grass";
 
         client.updateLocation(deviceId, location);
-        List<Park> populatedParks = client.getPopulatedParks(location.lat, location.lng, 1500);
+        Collection<Park> populatedParks = client.getPopulatedParks(location.lat, location.lng, 1500);
         assertNotNull(populatedParks);
 
         Park populatedPark = null;

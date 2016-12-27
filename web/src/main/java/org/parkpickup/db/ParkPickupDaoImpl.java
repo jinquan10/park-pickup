@@ -1,15 +1,17 @@
 package org.parkpickup.db;
 
 import org.parkpickup.api.Park;
+import org.parkpickup.api.Person;
+import org.parkpickup.domain.NearbyPopulatedParks;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Component
 public class ParkPickupDaoImpl extends BaseDao implements ParkPickupDao {
@@ -32,11 +34,35 @@ public class ParkPickupDaoImpl extends BaseDao implements ParkPickupDao {
     }
 
     @Override
-    public List<Park> getPopulatedParks(double lat, double lng, int radiusMeters) {
+    public Collection<Park> getPopulatedParks(double lat, double lng, int radiusMeters) {
         String point = String.format("SRID=4326;POINT(%s %s)", lng, lat);
-        List<Map<String, Object>> result = jdbcTemplate.queryForList(getPopulatedParksSql, new Object[]{point, radiusMeters});
-        System.out.println("");
 
-        return null;
+        List<NearbyPopulatedParks> result = jdbcTemplate.query(getPopulatedParksSql, new Object[]{point, radiusMeters}, new RowMapper<NearbyPopulatedParks>() {
+            @Override
+            public NearbyPopulatedParks mapRow(ResultSet rs, int rowNum) throws SQLException {
+                return new NearbyPopulatedParks(
+                        rs.getLong(1),
+                        rs.getString(2),
+                        rs.getDouble(3),
+                        rs.getDouble(4),
+                        rs.getString(5),
+                        rs.getString(6));
+            }
+        });
+
+        Map<Long, Park> parks = new HashMap<>();
+        for (NearbyPopulatedParks park : result) {
+            long parkId = park.parkId;
+            if (parks.containsKey(parkId)) {
+                Set<Person> playingNow = parks.get(parkId).playingNow;
+                playingNow.add(new Person(park.deviceId, park.personName));
+            } else {
+                Set<Person> playingNow = new HashSet<>();
+                playingNow.add(new Person(park.deviceId, park.personName));
+                parks.put(park.parkId, new Park(park.parkId, park.centerLat, park.centerLng, park.parkName, playingNow));
+            }
+        }
+
+        return parks.values();
     }
 }

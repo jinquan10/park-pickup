@@ -10,7 +10,7 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Arrays;
-import java.util.List;
+import java.util.Collection;
 
 import static org.parkpickup.client.Util.OBJECT_MAPPER;
 
@@ -45,7 +45,7 @@ public class ParkPickupV1Client implements ParkPickupV1 {
     }
 
     @Override
-    public List<Park> getPopulatedParks(double lat, double lng, int radiusMeters) throws RequestFailedException {
+    public Collection<Park> getPopulatedParks(double lat, double lng, int radiusMeters) throws RequestFailedException {
         try {
             String path = String.format(getPopulatedParksPath + "?lat=%s&lng=%s&radiusMeters=%s", lat, lng, radiusMeters);
             URL url = new URL(clientEnv.getProtocol(), clientEnv.getDomain(), clientEnv.getPort(), path);
