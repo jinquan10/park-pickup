@@ -3,7 +3,7 @@ CREATE EXTENSION IF NOT EXISTS postgis;
 CREATE TABLE IF NOT EXISTS park(
     id bigint PRIMARY KEY,
     name text,
-    location geometry(polygon),
+    location geography(polygon,4326),
     centerLat real,
     centerLng real
 );
@@ -18,7 +18,8 @@ CREATE TABLE IF NOT EXISTS bad_way(
 
 CREATE TABLE IF NOT EXISTS person(
     id text PRIMARY KEY, -- the MAC Address
-    name text
+    name text,
+    activity_pref text
 );
 
 CREATE TABLE IF NOT EXISTS rel_person_park(
@@ -29,3 +30,4 @@ CREATE TABLE IF NOT EXISTS rel_person_park(
 
 CREATE INDEX IF NOT EXISTS location_index ON park USING GIST (location);
 CREATE INDEX IF NOT EXISTS last_updated_index ON rel_person_park (last_updated);
+CREATE INDEX IF NOT EXISTS activity_pref_index ON person (activity_pref);

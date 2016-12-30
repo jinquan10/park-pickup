@@ -8,7 +8,7 @@ BEGIN
   SELECT id
   INTO withinParkId
   FROM public.park
-  WHERE ST_within(ST_GeomFromText(format('POINT(%s %s)', lng, lat)), location);
+  WHERE ST_Dwithin(st_geographyFromText(format('SRID=4326;POINT(%s %s)', lng, lat)), location, 0, false);
 
   IF withinParkId IS NULL
   THEN
