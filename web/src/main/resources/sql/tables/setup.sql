@@ -4,6 +4,7 @@ CREATE TABLE IF NOT EXISTS park(
     id bigint PRIMARY KEY,
     name text,
     location geography(polygon,4326),
+    location_center geography(point,4326),
     centerLat real,
     centerLng real
 );
@@ -28,6 +29,7 @@ CREATE TABLE IF NOT EXISTS rel_person_park(
     last_updated bigint
 );
 
+CREATE INDEX IF NOT EXISTS location_center_index ON park USING GIST (location_center);
 CREATE INDEX IF NOT EXISTS location_index ON park USING GIST (location);
 CREATE INDEX IF NOT EXISTS last_updated_index ON rel_person_park (last_updated);
 CREATE INDEX IF NOT EXISTS activity_pref_index ON person (activity_pref);

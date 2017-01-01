@@ -45,12 +45,13 @@ public class SeedOperationsDao extends BaseDao implements SeedOperations {
             return;
         }
 
-        Object[] parkParams = new Object[5];
+        Object[] parkParams = new Object[6];
         parkParams[0] = id;
         parkParams[1] = name;
         parkParams[2] = util.createGeometryStringFromLatLng(lats, lngs);
-        parkParams[3] = centerLat;
-        parkParams[4] = centerLng;
+        parkParams[3] = String.format("SRID=4326;POINT(%s %s)", centerLng, centerLat);
+        parkParams[4] = centerLat;
+        parkParams[5] = centerLng;
         batchArgs.add(parkParams);
 
         if (batchArgs.size() == batchSize) {

@@ -1,2 +1,2 @@
-INSERT INTO park (id, name, location, centerLat, centerLng)
-VALUES (?, ?, ST_GeomFromText(?), ?, ?);
+INSERT INTO park (id, name, location, location_center, centerLat, centerLng)
+VALUES (?, ?, ST_GeographyFromText(?), ST_GeographyFromText(?), ?, ?);
