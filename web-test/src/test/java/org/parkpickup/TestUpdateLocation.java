@@ -17,8 +17,8 @@ public class TestUpdateLocation {
     private static final ParkPickupV1Client client = new ParkPickupV1Client();
 
     @Test
-    public void populate10000() throws RequestFailedException {
-        for (int i = 0; i < 10000; i++) {
+    public void populate100() throws RequestFailedException {
+        for (int i = 0; i < 100; i++) {
             String deviceId = UUID.randomUUID().toString();
             Location location = new Location(47.667327, -122.147080);
 
@@ -33,7 +33,7 @@ public class TestUpdateLocation {
         String containsParkName = "Grass";
 
         client.updateLocation(deviceId, location);
-        Collection<Park> populatedParks = client.getPopulatedParks(location.lat, location.lng, 1500);
+        Collection<Park> populatedParks = client.getPopulatedParks(location.lat, location.lng, 80450);
 
         assertNotNull(populatedParks);
 
