@@ -16,7 +16,7 @@ import java.io.FileNotFoundException;
 import java.sql.SQLException;
 
 @Component
-@DependsOn("persistenceInit")
+@DependsOn("persistenceInit") // TODO get rid of dependsOn
 public class PbfToDbEtl {
     @Value("${pbfSingleDir}")
     private String pbfSingleDir;
@@ -47,6 +47,7 @@ public class PbfToDbEtl {
         EntityFilter filter = new EntityFilter(false, true, true);
         Osmonaut naut = new Osmonaut(pbfSingleDir, filter);
         naut.scan(osmonautReceiver);
+        // - TODO should not be a singleton?
         seedOperationsDao.flush();
 
         // - process it again for relations that have leisure ways
