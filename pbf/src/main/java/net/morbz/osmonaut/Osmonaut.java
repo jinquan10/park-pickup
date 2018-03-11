@@ -177,7 +177,6 @@ public class Osmonaut {
 						wayCache.addNeeded(member.getEntity().getId());
 						break;
 					case RELATION:
-						// TODO: Handle super-relations
 						break;
 					}
 				}
@@ -340,9 +339,7 @@ public class Osmonaut {
 		return true;
 	}
 
-	// TODO: Add progress receiver interface, so that the caller can be 
 	// informed about the progress even with verbosity = 0
-	// TODO: Use Log4j instead of sysouts
 	private void log(String msg, int verbosity) {
 		if(this.verbosity >= verbosity) {
 			System.out.println(msg);

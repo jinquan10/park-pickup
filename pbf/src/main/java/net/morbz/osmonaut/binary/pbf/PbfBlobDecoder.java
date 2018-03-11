@@ -249,7 +249,6 @@ public class PbfBlobDecoder implements Runnable {
 				case RELATION:
 					// We don't handle super-relation and instead just ignore
 					// sub-relations
-					// TODO: Handle super-relations
 					isIncomplete = true;
 					continue;
 				}

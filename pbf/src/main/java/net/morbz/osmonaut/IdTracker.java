@@ -34,8 +34,6 @@ import java.util.List;
  * support negative ID values.
  */
 public class IdTracker {
-	/* TODO: Can be optimized to use 20-30% less RAM if long-arrays are used
-	 * instead of BitSet */
 	private List<BitSet> segments = new ArrayList<BitSet>();
 	private static final int idsPerSegment = 512; // Should be a multiple of 64
 

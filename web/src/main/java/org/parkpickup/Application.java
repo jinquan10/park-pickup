@@ -9,12 +9,6 @@ import org.springframework.context.annotation.Bean;
 import java.io.IOException;
 import java.util.Properties;
 
-/**
- * TODO
- * 1. return only count of number of people in parks
- * 2. add tennis/basketball/soccer/ultimate
- */
-
 @SpringBootApplication
 public class Application {
 
