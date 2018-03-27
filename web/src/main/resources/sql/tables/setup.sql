@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS bad_way(
 CREATE TABLE IF NOT EXISTS person(
     id text PRIMARY KEY, -- the MAC Address
     name text,
-    activity_pref text
+    activities_str text
 );
 
 CREATE TABLE IF NOT EXISTS rel_person_park(
@@ -32,4 +32,4 @@ CREATE TABLE IF NOT EXISTS rel_person_park(
 CREATE INDEX IF NOT EXISTS location_center_index ON park USING GIST (location_center);
 CREATE INDEX IF NOT EXISTS location_index ON park USING GIST (location);
 CREATE INDEX IF NOT EXISTS last_updated_index ON rel_person_park (last_updated);
-CREATE INDEX IF NOT EXISTS activity_pref_index ON person (activity_pref);
+CREATE INDEX IF NOT EXISTS activities_text_index ON person (activities_text);
