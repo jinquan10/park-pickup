@@ -12,8 +12,8 @@ public interface ParkPickupV1 {
     String getPopulatedParksPath = "/park-pickup/v1/parks";
     Collection<Park> getPopulatedParks(double lat, double lng, int radiusMeters) throws RequestFailedException;
 
-    String pickActivitiesPath = "/park-pickup/v1/activities";
-    void pickActivities(String deviceId, Set<String> activities);
+    String setActivitiesPath = "/park-pickup/v1/activities";
+    void setActivities(String deviceId, Set<String> activities);
 
     //    void playToday(long personId, long parkId, boolean isPlayingToday);
 //    void requestPickupGame(long personId, long parkId);

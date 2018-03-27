@@ -4,7 +4,6 @@ import org.parkpickup.api.Location;
 import org.parkpickup.api.Park;
 import org.parkpickup.api.ParkPickupV1;
 import org.parkpickup.db.ParkPickupDao;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +11,10 @@ import org.springframework.web.bind.annotation.*;
 import javax.inject.Inject;
 import javax.validation.Valid;
 import java.util.Collection;
+import java.util.Set;
 
+import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
@@ -23,17 +25,24 @@ public class ParkPickupControllerV1 implements ParkPickupV1 {
     private ParkPickupDao parkPickupDao;
 
     @Override
-    @ResponseStatus(HttpStatus.OK)
-    @RequestMapping(method = PUT, path = updateLocationPath, consumes = "application/json")
+    @ResponseStatus(OK)
+    @RequestMapping(method = PUT, path = updateLocationPath, consumes = APPLICATION_JSON_VALUE)
     public void updateLocation(@PathVariable String deviceId, @RequestBody @Valid Location location) {
         parkPickupDao.updateLocation(deviceId, location.lat, location.lng);
     }
 
     @Override
     @ResponseBody
-    @ResponseStatus(HttpStatus.OK)
-    @RequestMapping(method = GET, path = getPopulatedParksPath, produces = "application/json")
+    @ResponseStatus(OK)
+    @RequestMapping(method = GET, path = getPopulatedParksPath, produces = APPLICATION_JSON_VALUE)
     public Collection<Park> getPopulatedParks(@RequestParam double lat, @RequestParam double lng, @RequestParam int radiusMeters) {
         return parkPickupDao.getPopulatedParks(lat, lng, radiusMeters);
+    }
+
+    @Override
+    @ResponseStatus(OK)
+    @RequestMapping(method = PUT, path = setActivitiesPath, consumes = APPLICATION_JSON_VALUE)
+    public void setActivities(String deviceId, Set<String> activities) {
+
     }
 }

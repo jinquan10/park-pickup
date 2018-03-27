@@ -3,12 +3,14 @@ package org.parkpickup.db;
 import org.parkpickup.api.Park;
 import org.parkpickup.api.Person;
 import org.parkpickup.domain.NearbyPopulatedParks;
+import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
@@ -17,11 +19,13 @@ import java.util.*;
 public class ParkPickupDaoImpl extends BaseDao implements ParkPickupDao {
     private SimpleJdbcCall updatePersonLocation;
     private String getPopulatedParksSql;
+    private String setActivitiesSql;
 
     @PostConstruct
     public void postConstruct() throws IOException, SQLException {
         this.updatePersonLocation = new SimpleJdbcCall(jdbcTemplate).withFunctionName("update_person_location");
         this.getPopulatedParksSql = util.getSqlStatementFromFile("sql/query/query_nearby_populated_parks.sql");
+        this.setActivitiesSql = util.getSqlStatementFromFile("sql/update/set_activities.sql");
     }
 
     @Override
@@ -64,5 +68,10 @@ public class ParkPickupDaoImpl extends BaseDao implements ParkPickupDao {
         }
 
         return parks.values();
+    }
+
+    @Override
+    public void setActivities(String deviceId, Set<String> activities) {
+        jdbcTemplate.update(this.setActivitiesSql, activities);
     }
 }
