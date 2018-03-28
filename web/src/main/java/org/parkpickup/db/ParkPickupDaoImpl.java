@@ -2,15 +2,13 @@ package org.parkpickup.db;
 
 import org.parkpickup.api.Park;
 import org.parkpickup.api.Person;
-import org.parkpickup.domain.NearbyPopulatedParks;
-import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.parkpickup.domain.PersonAtAPark;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
@@ -41,28 +39,29 @@ public class ParkPickupDaoImpl extends BaseDao implements ParkPickupDao {
     public Collection<Park> getPopulatedParks(double lat, double lng, int radiusMeters) {
         String point = String.format("SRID=4326;POINT(%s %s)", lng, lat);
 
-        List<NearbyPopulatedParks> result = jdbcTemplate.query(getPopulatedParksSql, new Object[]{point, radiusMeters}, new RowMapper<NearbyPopulatedParks>() {
+        List<PersonAtAPark> result = jdbcTemplate.query(getPopulatedParksSql, new Object[]{point, radiusMeters}, new RowMapper<PersonAtAPark>() {
             @Override
-            public NearbyPopulatedParks mapRow(ResultSet rs, int rowNum) throws SQLException {
-                return new NearbyPopulatedParks(
+            public PersonAtAPark mapRow(ResultSet rs, int rowNum) throws SQLException {
+                return new PersonAtAPark(
                         rs.getLong(1),
                         rs.getString(2),
                         rs.getDouble(3),
                         rs.getDouble(4),
                         rs.getString(5),
-                        rs.getString(6));
+                        rs.getString(6),
+                        rs.getString(7));
             }
         });
 
         Map<Long, Park> parks = new HashMap<>();
-        for (NearbyPopulatedParks park : result) {
+        for (PersonAtAPark park : result) {
             long parkId = park.parkId;
             if (parks.containsKey(parkId)) {
-                Set<Person> playingNow = parks.get(parkId).playingNow;
-                playingNow.add(new Person(park.deviceId, park.personName));
+                Set<Person> playingNow = parks.get(parkId).people;
+                playingNow.add(new Person(park.deviceId, park.personName, park.activities));
             } else {
                 Set<Person> playingNow = new HashSet<>();
-                playingNow.add(new Person(park.deviceId, park.personName));
+                playingNow.add(new Person(park.deviceId, park.personName, park.activities));
                 parks.put(park.parkId, new Park(park.parkId, park.centerLat, park.centerLng, park.parkName, playingNow));
             }
         }

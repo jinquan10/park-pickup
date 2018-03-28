@@ -46,7 +46,7 @@ public class TestUpdateLocation {
 
     private boolean findPersonInPark(String deviceId, Park populatedPark) {
         boolean foundPerson = false;
-        for (Person person : populatedPark.playingNow) {
+        for (Person person : populatedPark.people) {
             if (deviceId.equals(person.id)) {
                 foundPerson = true;
             }
