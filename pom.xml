@@ -8,7 +8,6 @@
     <modules>
         <module>pbf</module>
         <module>web</module>
-        <module>web-test</module>
         <module>park-pickup-client</module>
         <module>park-pickup-api</module>
     </modules>

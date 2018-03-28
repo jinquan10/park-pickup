@@ -35,7 +35,7 @@ public class AppProp {
      * @throws IOException
      */
     public Properties getPopulatedProperties() throws IOException {
-        ClassPathResource propertyFileResource = new ClassPathResource("config.properties");
+        ClassPathResource propertyFileResource = new ClassPathResource("config/test.properties");
         Scanner scanner = new Scanner(propertyFileResource.getFile());
 
         String envPrefix = env + ".";
