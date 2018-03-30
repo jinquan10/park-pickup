@@ -2,7 +2,6 @@ CREATE OR REPLACE FUNCTION update_person_location(deviceId TEXT, lat REAL, lng R
   RETURNS VOID AS $$
 
 DECLARE withinParkId  BIGINT;
-DECLARE currentParkId BIGINT;
 
 BEGIN
   SELECT id
@@ -15,22 +14,16 @@ BEGIN
     DELETE FROM rel_person_park
     WHERE rel_person_park.device_id = deviceId;
   ELSE
-    SELECT park_id
-    INTO currentParkId
-    FROM public.rel_person_park
-    WHERE public.rel_person_park.device_id = deviceId;
-
-    IF currentParkId IS NULL
-    THEN
-      INSERT INTO rel_person_park (device_id, park_id, last_updated)
-      VALUES (deviceId, withinParkId, extract(EPOCH FROM now()));
-    ELSE
-      UPDATE
-        rel_person_park
-      SET
-        park_id      = withinParkId,
-        last_updated = extract(EPOCH FROM now())
-      WHERE rel_person_park.device_id = deviceId;
+      INSERT INTO
+        rel_person_park (device_id, park_id, last_updated)
+      VALUES
+        (deviceId, withinParkId, extract(EPOCH FROM now()))
+      ON CONFLICT
+        (deviceId)
+      DO UPDATE SET
+        (park_id, last_updated) = (withinParkId,extract(EPOCH FROM now()))
+      WHERE
+        rel_person_park.device_id = deviceId;
     END IF;
   END IF;
 END;

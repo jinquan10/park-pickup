@@ -1,5 +1,6 @@
 package org.parkpickup.app;
 
+import org.parkpickup.api.ActivityEnum;
 import org.parkpickup.api.Location;
 import org.parkpickup.api.Park;
 import org.parkpickup.api.ParkPickupV1;
@@ -42,7 +43,7 @@ public class ParkPickupControllerV1 implements ParkPickupV1 {
     @Override
     @ResponseStatus(OK)
     @RequestMapping(method = PUT, path = setActivitiesPath, consumes = APPLICATION_JSON_VALUE)
-    public void setActivities(String deviceId, Set<String> activities) {
+    public void setActivities(String deviceId, Set<ActivityEnum> activities) {
 
     }
 }
