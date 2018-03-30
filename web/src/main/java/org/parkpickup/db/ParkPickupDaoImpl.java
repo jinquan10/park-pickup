@@ -23,7 +23,7 @@ public class ParkPickupDaoImpl extends BaseDao implements ParkPickupDao {
     public void postConstruct() throws IOException, SQLException {
         this.updatePersonLocation = new SimpleJdbcCall(jdbcTemplate).withFunctionName("update_person_location");
         this.getPopulatedParksSql = util.getSqlStatementFromFile("sql/query/query_nearby_populated_parks.sql");
-        this.setActivitiesSql = util.getSqlStatementFromFile("sql/update/set_activities.sql");
+        this.setActivitiesSql = util.getSqlStatementFromFile("sql/upsert/set_activities.sql");
     }
 
     @Override

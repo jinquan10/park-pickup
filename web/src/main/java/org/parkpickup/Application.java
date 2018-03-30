@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.util.Properties;
 
 @SpringBootApplication
-@PropertySource("classpath:config/")
 public class Application {
 
     /**

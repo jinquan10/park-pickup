@@ -13,7 +13,7 @@ public interface ParkPickupV1 {
     Collection<Park> getPopulatedParks(double lat, double lng, int radiusMeters) throws RequestFailedException;
 
     String setActivitiesPath = "/park-pickup/v1/activities";
-    void setActivities(String deviceId, Set<String> activities);
+    void setActivities(String deviceId, Set<ActivityEnum> activities);
 
     //    void playToday(long personId, long parkId, boolean isPlayingToday);
 //    void requestPickupGame(long personId, long parkId);
