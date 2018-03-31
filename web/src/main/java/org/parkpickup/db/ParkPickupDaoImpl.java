@@ -1,8 +1,11 @@
 package org.parkpickup.db;
 
+import org.parkpickup.api.ActivityEnum;
 import org.parkpickup.api.Park;
 import org.parkpickup.api.Person;
 import org.parkpickup.domain.PersonAtAPark;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.stereotype.Component;
@@ -15,6 +18,8 @@ import java.util.*;
 
 @Component
 public class ParkPickupDaoImpl extends BaseDao implements ParkPickupDao {
+    private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
+
     private SimpleJdbcCall updatePersonLocation;
     private String getPopulatedParksSql;
     private String setActivitiesSql;
@@ -69,8 +74,22 @@ public class ParkPickupDaoImpl extends BaseDao implements ParkPickupDao {
         return parks.values();
     }
 
+
     @Override
-    public void setActivities(String deviceId, Set<String> activities) {
-        jdbcTemplate.update(this.setActivitiesSql, activities);
+    public void setActivities(String deviceId, Set<ActivityEnum> activities) {
+        StringBuilder sb = new StringBuilder();
+        for (ActivityEnum activity : activities) {
+            sb.append(activity);
+            sb.append(",");
+        }
+
+        String activitiesString = sb.toString();
+
+        int rowsAffected = jdbcTemplate.update(this.setActivitiesSql, deviceId, activitiesString, activitiesString, deviceId);
+
+        if (rowsAffected != 1) {
+            LOGGER.error(String.format("Should only have affected 1 row, deviceId: %s", deviceId));
+            throw new RuntimeException();
+        }
     }
 }
