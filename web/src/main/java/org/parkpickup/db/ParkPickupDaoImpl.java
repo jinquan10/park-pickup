@@ -27,7 +27,7 @@ public class ParkPickupDaoImpl extends BaseDao implements ParkPickupDao {
     @PostConstruct
     public void postConstruct() throws IOException, SQLException {
         this.updatePersonLocation = new SimpleJdbcCall(jdbcTemplate).withFunctionName("update_person_location");
-        this.getPopulatedParksSql = util.getSqlStatementFromFile("sql/query/query_nearby_populated_parks.sql");
+        this.getPopulatedParksSql = util.getSqlStatementFromFile("sql/query/query_parks.sql");
         this.setActivitiesSql = util.getSqlStatementFromFile("sql/upsert/set_activities.sql");
     }
 
@@ -41,10 +41,37 @@ public class ParkPickupDaoImpl extends BaseDao implements ParkPickupDao {
     }
 
     @Override
-    public Collection<Park> getPopulatedParks(double lat, double lng, int radiusMeters) {
-        String point = String.format("SRID=4326;POINT(%s %s)", lng, lat);
+    public Collection<Park> getParks(double lat, double lng, int radiusMeters, List<ActivityEnum> activities) {
+        StringBuilder whereClause = new StringBuilder();
 
-        List<PersonAtAPark> result = jdbcTemplate.query(getPopulatedParksSql, new Object[]{point, radiusMeters}, new RowMapper<PersonAtAPark>() {
+        String point = String.format("SRID=4326;POINT(%s %s)", lng, lat);
+        String withinRadius = String.format("ST_DWithin(st_geographyFromText(%s), park.location_center, %s, false)", point, radiusMeters);
+
+        whereClause.append(withinRadius);
+
+        if (activities != null) {
+            StringBuilder activitiesClause = new StringBuilder();
+            activitiesClause.append("activities_str in (");
+
+            boolean first = true;
+            for (ActivityEnum activity : activities) {
+                if (!first) {
+                    activitiesClause.append(",");
+                    first = false;
+                }
+
+                activitiesClause.append("'");
+                activitiesClause.append(activity);
+                activitiesClause.append("'");
+            }
+
+            activitiesClause.append(")");
+
+            whereClause.append(" AND ");
+            whereClause.append(activitiesClause.toString());
+        }
+
+        List<PersonAtAPark> result = jdbcTemplate.query(getPopulatedParksSql, new Object[]{whereClause}, new RowMapper<PersonAtAPark>() {
             @Override
             public PersonAtAPark mapRow(ResultSet rs, int rowNum) throws SQLException {
                 return new PersonAtAPark(

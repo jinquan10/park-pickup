@@ -3,6 +3,7 @@ package org.parkpickup.api;
 import org.parkpickup.api.exception.RequestFailedException;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 public interface ParkPickupV1 {
@@ -10,7 +11,7 @@ public interface ParkPickupV1 {
     void updateLocation(String deviceId, Location location) throws RequestFailedException;
 
     String getPopulatedParksPath = "/park-pickup/v1/parks";
-    Collection<Park> getPopulatedParks(double lat, double lng, int radiusMeters) throws RequestFailedException;
+    Collection<Park> getPopulatedParks(double lat, double lng, int radiusMeters, List<ActivityEnum> activities) throws RequestFailedException;
 
     String setActivitiesPath = "/park-pickup/v1/activities";
     void setActivities(String deviceId, Set<ActivityEnum> activities);
