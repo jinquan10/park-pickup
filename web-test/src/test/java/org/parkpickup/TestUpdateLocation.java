@@ -33,7 +33,7 @@ public class TestUpdateLocation {
         String containsParkName = "Grass";
 
         client.updateLocation(deviceId, location);
-        Collection<Park> populatedParks = client.getPopulatedParks(location.lat, location.lng, 80450);
+        Collection<Park> populatedParks = client.getParks(location.lat, location.lng, 80450);
 
         assertNotNull(populatedParks);
 

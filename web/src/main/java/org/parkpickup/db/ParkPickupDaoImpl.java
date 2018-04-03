@@ -101,7 +101,6 @@ public class ParkPickupDaoImpl extends BaseDao implements ParkPickupDao {
         return parks.values();
     }
 
-
     @Override
     public void setActivities(String deviceId, Set<ActivityEnum> activities) {
         StringBuilder sb = new StringBuilder();
