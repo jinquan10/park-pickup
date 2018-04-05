@@ -1,5 +1,6 @@
 package endtoendtest;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.parkpickup.Application;
@@ -9,7 +10,10 @@ import org.parkpickup.api.Park;
 import org.parkpickup.api.exception.RequestFailedException;
 import org.parkpickup.client.ClientEnv;
 import org.parkpickup.client.ParkPickupV1Client;
+import org.parkpickup.db.init.PersistenceInit;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.*;
@@ -20,8 +24,17 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = DEFINED_PORT, classes = Application.class)
+@TestPropertySource(properties = {"env = test"})
 public class HappyEndToEndTest {
-    private final ParkPickupV1Client client = new ParkPickupV1Client(ClientEnv.TEST);
+    private static final ParkPickupV1Client client = new ParkPickupV1Client(ClientEnv.TEST);
+
+    @Autowired
+    private PersistenceInit persistenceInit;
+
+    @Before
+    public void before() {
+        this.persistenceInit.resetDBDynamicData();
+    }
 
     @Test
     public void setActivities_gotoGrassLawnPark_getNearbyParks500MetersAwayFromGrasslawn() throws RequestFailedException {
@@ -35,10 +48,5 @@ public class HappyEndToEndTest {
         this.client.setActivities(deviceId, activities);
         this.client.updateLocation(deviceId, grassLawnLocation);
         Collection<Park> parks = this.client.getParks(grassLawnLocation.lat, grassLawnLocation.lng, radiusMeters, activities);
-
-        for (Park park : parks) {
-            park.displayName.contains(expectedParkName);
-            park.people
-        }
     }
 }
