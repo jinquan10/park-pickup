@@ -34,7 +34,7 @@ public class PersistenceInit {
         String teardownAllTablesSql = util.getSqlStatementFromFile("sql/tables/teardown_all.sql");
         String teardownDynamicTablesSql = util.getSqlStatementFromFile("sql/tables/teardown_dynamic.sql");
         String tearndownFunctionsStatement = util.getSqlStatementFromFile("sql/functions/teardown_functions.sql");
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSourceFactory.getDataSource(DataSourceFactory.appDbName));
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSourceFactory.getDataSource());
 
         if (isTeardownDynamicTables) {
             jdbcTemplate.execute(teardownDynamicTablesSql);

@@ -24,7 +24,7 @@ public class DbCreation {
 
         try {
             // - test the connection to db
-            dataSourceFactory.getDataSource(DataSourceFactory.appDbName).getConnection();
+            dataSourceFactory.getDataSource().getConnection();
         } catch (SQLException e) {
             if (e.getMessage().contains("does not exist")) {
                 shouldInitDb = true;
@@ -33,7 +33,8 @@ public class DbCreation {
 
         if (shouldInitDb) {
             String creationStatement = util.getSqlStatementFromFile("sql/init_db.sql");
-            new JdbcTemplate(dataSourceFactory.getDataSource(DataSourceFactory.adminDb)).execute(creationStatement);
+            creationStatement = String.format(creationStatement, dataSourceFactory.getDbName());
+            new JdbcTemplate(dataSourceFactory.getDataSource()).execute(creationStatement);
         }
     }
 }

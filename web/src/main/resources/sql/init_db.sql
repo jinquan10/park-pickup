@@ -1,6 +1,4 @@
--- Database: parkpickup
-
-CREATE DATABASE parkpickup
+CREATE DATABASE %s
     WITH
     OWNER = postgres
     ENCODING = 'UTF8'
