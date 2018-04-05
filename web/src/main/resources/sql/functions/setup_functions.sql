@@ -1,7 +1,7 @@
 CREATE OR REPLACE FUNCTION update_person_location(deviceId TEXT, lat REAL, lng REAL)
   RETURNS VOID AS $$
 
-DECLARE withinParkId  BIGINT;
+DECLARE withinParkId BIGINT;
 
 BEGIN
   SELECT id
@@ -24,7 +24,6 @@ BEGIN
         (park_id, last_updated) = (withinParkId,extract(EPOCH FROM now()))
       WHERE
         rel_person_park.device_id = deviceId;
-    END IF;
   END IF;
 END;
 $$ LANGUAGE plpgsql;

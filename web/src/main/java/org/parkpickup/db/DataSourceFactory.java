@@ -25,6 +25,16 @@ public class DataSourceFactory {
         return ds;
     }
 
+    public DataSource getEmptyDataSource() {
+        DriverManagerDataSource ds = new DriverManagerDataSource();
+        ds.setDriverClassName("org.postgresql.Driver");
+        ds.setUrl("jdbc:postgresql://localhost:5432/"); // 5432 default postgres port
+        ds.setUsername(this.adminUser);
+        ds.setPassword(this.adminPassword);
+
+        return ds;
+    }
+
     public String getDbName() {
         return this.dbName;
     }

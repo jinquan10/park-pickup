@@ -22,8 +22,11 @@ public class AppProp {
         for (String arg : arguments) {
             if (arg.contains("-Denv=")) {
                 env = arg.substring(arg.indexOf("=") + 1);
+                return;
             }
         }
+
+        this.env = System.getProperty("env");
 
         if (env == null) {
             throw new RuntimeException("Need -Denv=");
@@ -32,22 +35,26 @@ public class AppProp {
 
     /**
      * Read from the properties file and populate the map of properties
+     *
      * @throws IOException
      */
     public Properties getPopulatedProperties() throws IOException {
         ClassPathResource propertyFileResource = new ClassPathResource("config.properties");
         Scanner scanner = new Scanner(propertyFileResource.getFile());
 
-        String envPrefix = env + ".";
+        String envPrefix = env + "\\.";
         Properties properties = System.getProperties();
         while (scanner.hasNextLine()) {
             String line = scanner.nextLine();
 
-            if (line.contains(envPrefix)) {
-                String[] firstFoo = line.split(envPrefix);
-                String[] keyValue = firstFoo[1].split("=");
-                properties.put(keyValue[0], keyValue[1]);
+            String[] firstFoo = line.split(envPrefix);
+
+            if (firstFoo == null || firstFoo.length == 1) {
+                continue;
             }
+
+            String[] keyValue = firstFoo[1].split("=");
+            properties.put(keyValue[0], keyValue[1]);
         }
 
         scanner.close();

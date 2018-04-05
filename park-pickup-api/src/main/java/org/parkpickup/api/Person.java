@@ -25,7 +25,7 @@ public class Person {
     public Person(String id, String displayName, String activities) {
         this.id = id;
         this.displayName = displayName;
-        this.activities = activities;
+        this.activities = stringToEnum(activities);
     }
 
     private List<ActivityEnum> stringToEnum(String activitiesString) {
@@ -35,5 +35,7 @@ public class Person {
         for (String activity : activitiesArr) {
             activities.add(ActivityEnum.valueOf(activity));
         }
+
+        return activities;
     }
 }

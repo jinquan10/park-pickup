@@ -2,7 +2,6 @@ package org.parkpickup.db.init;
 
 import org.parkpickup.Util;
 import org.parkpickup.db.DataSourceFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
@@ -15,41 +14,35 @@ import java.sql.SQLException;
 @Component
 @DependsOn("dbCreation")
 public class PersistenceInit {
-    @Inject
     private Util util;
-
-    @Inject
     private DataSourceFactory dataSourceFactory;
 
-    @Value("${teardown.tables.all}")
-    private boolean isTeardownAllTables;
+    private final String setupStatement;
+    private final String setupFunctionsStatement;
+    private final String teardownAllTablesSql;
+    private final String teardownDynamicTablesSql;
+    private final String teardownFunctionsStatement;
 
-    @Value("${teardown.tables.dynamic}")
-    private boolean isTeardownDynamicTables;
+    private final JdbcTemplate jdbcTemplate;
 
-    private final String setupStatement = util.getSqlStatementFromFile("sql/tables/setup.sql");
-    private final String setupFunctionsStatement = util.getSqlStatementFromFile("sql/functions/setup_functions.sql");
-    private final String teardownAllTablesSql = util.getSqlStatementFromFile("sql/tables/teardown_all.sql");
-    private final String teardownDynamicTablesSql = util.getSqlStatementFromFile("sql/tables/teardown_dynamic.sql");
-    private final String tearndownFunctionsStatement = util.getSqlStatementFromFile("sql/functions/teardown_functions.sql");
+    @Inject
+    public PersistenceInit(
+            Util util,
+            DataSourceFactory dataSourceFactory) throws IOException, SQLException {
+        this.util = util;
+        this.dataSourceFactory = dataSourceFactory;
 
-    private final JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSourceFactory.getDataSource());
-    
-    public PersistenceInit() throws IOException, SQLException {
+        this.setupStatement = this.util.getSqlStatementFromFile("sql/tables/setup.sql");
+        this.setupFunctionsStatement = this.util.getSqlStatementFromFile("sql/functions/setup_functions.sql");
+        this.teardownAllTablesSql = this.util.getSqlStatementFromFile("sql/tables/teardown_all.sql");
+        this.teardownDynamicTablesSql = this.util.getSqlStatementFromFile("sql/tables/teardown_dynamic.sql");
+        this.teardownFunctionsStatement = this.util.getSqlStatementFromFile("sql/functions/teardown_functions.sql");
+
+        this.jdbcTemplate = new JdbcTemplate(this.dataSourceFactory.getDataSource());
     }
 
     @PostConstruct
     public void postConstruct() throws IOException, SQLException {
-
-        if (isTeardownDynamicTables) {
-            jdbcTemplate.execute(teardownDynamicTablesSql);
-
-            if (isTeardownAllTables) {
-                jdbcTemplate.execute(tearndownFunctionsStatement);
-                jdbcTemplate.execute(teardownAllTablesSql);
-            }
-        }
-
         buildDB();
     }
 

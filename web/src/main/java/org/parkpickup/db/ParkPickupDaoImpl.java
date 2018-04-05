@@ -41,7 +41,7 @@ public class ParkPickupDaoImpl extends BaseDao implements ParkPickupDao {
     }
 
     @Override
-    public Collection<Park> getParks(double lat, double lng, int radiusMeters, List<ActivityEnum> activities) {
+    public Collection<Park> getParks(double lat, double lng, int radiusMeters, Set<ActivityEnum> activities) {
         StringBuilder whereClause = new StringBuilder();
 
         String point = String.format("SRID=4326;POINT(%s %s)", lng, lat);
@@ -51,7 +51,7 @@ public class ParkPickupDaoImpl extends BaseDao implements ParkPickupDao {
 
         if (activities != null) {
             StringBuilder activitiesClause = new StringBuilder();
-            activitiesClause.append("activities_str in (");
+            activitiesClause.append("activities_text in (");
 
             boolean first = true;
             for (ActivityEnum activity : activities) {

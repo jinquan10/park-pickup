@@ -34,7 +34,12 @@ public class DbCreation {
         if (shouldInitDb) {
             String creationStatement = util.getSqlStatementFromFile("sql/init_db.sql");
             creationStatement = String.format(creationStatement, dataSourceFactory.getDbName());
-            new JdbcTemplate(dataSourceFactory.getDataSource()).execute(creationStatement);
+
+            try {
+                new JdbcTemplate(dataSourceFactory.getEmptyDataSource()).execute(creationStatement);
+            } catch (Throwable e) {
+                System.out.println(e);
+            }
         }
     }
 }

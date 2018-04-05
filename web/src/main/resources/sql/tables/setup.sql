@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS bad_way(
 CREATE TABLE IF NOT EXISTS person(
     id text PRIMARY KEY, -- the MAC Address
     name text,
-    activities_str text
+    activities_text text
 );
 
 CREATE TABLE IF NOT EXISTS rel_person_park(

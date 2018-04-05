@@ -13,7 +13,6 @@ import org.parkpickup.client.ParkPickupV1Client;
 import org.parkpickup.db.init.PersistenceInit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.*;
@@ -24,9 +23,12 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = DEFINED_PORT, classes = Application.class)
-@TestPropertySource(properties = {"env = test"})
 public class HappyEndToEndTest {
     private static final ParkPickupV1Client client = new ParkPickupV1Client(ClientEnv.TEST);
+
+    static {
+        System.setProperty("env", "test");
+    }
 
     @Autowired
     private PersistenceInit persistenceInit;

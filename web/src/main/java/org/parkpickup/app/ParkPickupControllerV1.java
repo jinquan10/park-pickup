@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.inject.Inject;
 import javax.validation.Valid;
 import java.util.Collection;
-import java.util.List;
 import java.util.Set;
 
 import static org.springframework.http.HttpStatus.OK;
@@ -37,11 +36,11 @@ public class ParkPickupControllerV1 implements ParkPickupV1 {
     @ResponseBody
     @ResponseStatus(OK)
     @RequestMapping(method = GET, path = getPopulatedParksPath, produces = APPLICATION_JSON_VALUE)
-    public Collection<Park> getPopulatedParks(
+    public Collection<Park> getParks(
             @RequestParam double lat,
             @RequestParam double lng,
             @RequestParam int radiusMeters,
-            @RequestParam List<ActivityEnum> activities) {
+            @RequestParam Set<ActivityEnum> activities) {
         return parkPickupDao.getParks(lat, lng, radiusMeters, activities);
     }
 
