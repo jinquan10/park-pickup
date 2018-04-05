@@ -47,7 +47,7 @@ public class ParkPickupControllerV1 implements ParkPickupV1 {
     @Override
     @ResponseStatus(OK)
     @RequestMapping(method = PUT, path = setActivitiesPath, consumes = APPLICATION_JSON_VALUE)
-    public void setActivities(@RequestParam String deviceId, @RequestBody Set<ActivityEnum> activities) {
+    public void setActivities(@PathVariable String deviceId, @RequestBody Set<ActivityEnum> activities) {
         if (deviceId == null || activities == null) {
             throw new RuntimeException();
         }
