@@ -6,7 +6,6 @@ import org.junit.runner.RunWith;
 import org.parkpickup.Application;
 import org.parkpickup.api.ActivityEnum;
 import org.parkpickup.api.Location;
-import org.parkpickup.api.Park;
 import org.parkpickup.api.exception.RequestFailedException;
 import org.parkpickup.client.ClientEnv;
 import org.parkpickup.client.ParkPickupV1Client;
@@ -15,7 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 
 import static org.parkpickup.api.ActivityEnum.BASKETBALL;
 import static org.parkpickup.api.ActivityEnum.TENNIS;
@@ -49,6 +51,6 @@ public class HappyEndToEndTest {
 
         this.client.setActivities(deviceId, activities);
         this.client.updateLocation(deviceId, grassLawnLocation);
-        Collection<Park> parks = this.client.getParks(grassLawnLocation.lat, grassLawnLocation.lng, radiusMeters, activities);
+//        Collection<Park> parks = this.client.getParks(grassLawnLocation.lat, grassLawnLocation.lng, radiusMeters, activities);
     }
 }
