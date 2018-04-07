@@ -45,7 +45,7 @@ public class ParkPickupDaoImpl extends BaseDao implements ParkPickupDao {
         StringBuilder whereClause = new StringBuilder();
 
         String point = String.format("SRID=4326;POINT(%s %s)", lng, lat);
-        String withinRadius = String.format("ST_DWithin(st_geographyFromText(%s), park.location_center, %s, false)", point, radiusMeters);
+        String withinRadius = String.format("ST_DWithin(st_geographyFromText('%s'), park.location_center, %s, false)", point, radiusMeters);
 
         whereClause.append(withinRadius);
 
@@ -71,7 +71,9 @@ public class ParkPickupDaoImpl extends BaseDao implements ParkPickupDao {
             whereClause.append(activitiesClause.toString());
         }
 
-        List<PersonAtAPark> result = jdbcTemplate.query(getPopulatedParksSql, new Object[]{whereClause}, new RowMapper<PersonAtAPark>() {
+        String queryString = String.format(this.getPopulatedParksSql, whereClause);
+
+        List<PersonAtAPark> result = jdbcTemplate.query(queryString, new RowMapper<PersonAtAPark>() {
             @Override
             public PersonAtAPark mapRow(ResultSet rs, int rowNum) throws SQLException {
                 return new PersonAtAPark(
