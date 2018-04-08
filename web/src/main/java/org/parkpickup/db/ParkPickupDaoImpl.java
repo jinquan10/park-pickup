@@ -51,7 +51,7 @@ public class ParkPickupDaoImpl extends BaseDao implements ParkPickupDao {
 
         if (activities != null) {
             StringBuilder activitiesClause = new StringBuilder();
-            activitiesClause.append("activities_text ~ '^(");
+            activitiesClause.append("(activities_text ~ '^(");
 
             for (ActivityEnum activity : activities) {
                 activitiesClause.append(activity);
@@ -59,7 +59,7 @@ public class ParkPickupDaoImpl extends BaseDao implements ParkPickupDao {
             }
 
             activitiesClause.replace(activitiesClause.length() - 1, activitiesClause.length(), "");
-            activitiesClause.append(").*'");
+            activitiesClause.append(").*' OR activities_text IS NULL)");
 
             whereClause.append(" AND ");
             whereClause.append(activitiesClause.toString());

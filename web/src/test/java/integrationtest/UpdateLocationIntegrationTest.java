@@ -15,9 +15,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Arrays;
 import java.util.Collection;
-import java.util.UUID;
+import java.util.HashSet;
+import java.util.Set;
 
+import static java.util.UUID.randomUUID;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.DEFINED_PORT;
@@ -41,7 +44,7 @@ public class UpdateLocationIntegrationTest {
 
     @Test
     public void updateLocationTwice_ShouldHaveNoEffectOnReturnValue() throws RequestFailedException {
-        String expectedDeviceId = UUID.randomUUID().toString();
+        String expectedDeviceId = randomUUID().toString();
         Location grassLawnLocation = new Location(47.667327, -122.147080);
         int radiusMeters = 5000;
 
@@ -55,13 +58,76 @@ public class UpdateLocationIntegrationTest {
 
         for (Park park : parks) {
             assertTrue(park.displayName.contains(expectedParkName));
-            assertEquals(1, park.people.size());
-            assertEquals(1, park.people.size());
+            verifyPark(expectedDeviceId, park);
+        }
+    }
+
+    @Test
+    public void multiplePeople_onePark_getsBothPeople() throws RequestFailedException {
+        Set<String> people = new HashSet<>(Arrays.asList(new String[]{randomUUID().toString(), randomUUID().toString()}));
+        Location grassLawnLocation = new Location(47.667327, -122.147080);
+        String expectedParkName = "Grass Lawn Park";
+        int radiusMeters = 5000;
+
+        for(String deviceId : people) {
+            this.client.updateLocation(deviceId, grassLawnLocation);
+        }
+
+        Collection<Park> parks = this.client.getParks(grassLawnLocation.lat, grassLawnLocation.lng, radiusMeters, null);
+        assertEquals(1, parks.size());
+
+        for (Park park : parks) {
+            assertTrue(park.displayName.contains(expectedParkName));
+            assertEquals(2, park.people.size());
 
             for (Person person : park.people) {
-                assertEquals(expectedDeviceId, person.id);
+                people.remove(person.id);
                 assertEquals(null, person.activities);
             }
+
+            assertEquals(0, people.size());
+        }
+    }
+
+    @Test
+    public void multiplePeople_multipleParks_getsBothParks_withOnePersonEach() throws RequestFailedException {
+        String personGrassLawn = randomUUID().toString();
+        String personWelcomePark = randomUUID().toString();
+        Location welcomeParkLocation = new Location(47.676511, -122.152171);
+        Location grassLawnLocation = new Location(47.667327, -122.147080);
+        String grassLawnName = "Grass Lawn Park";
+        String welcomeParkName = "Welcome Park";
+        int radiusMeters = 5000;
+
+        this.client.updateLocation(personGrassLawn, grassLawnLocation);
+        this.client.updateLocation(personWelcomePark, welcomeParkLocation);
+
+        Collection<Park> parks = this.client.getParks(grassLawnLocation.lat, grassLawnLocation.lng, radiusMeters, null);
+        assertEquals(2, parks.size());
+
+        boolean verifiedGrassLawnPark = false;
+        boolean verifiedWelcomePark = false;
+
+        for (Park park : parks) {
+            if (park.displayName.contains(grassLawnName)) {
+                verifyPark(personGrassLawn, park);
+                verifiedGrassLawnPark = true;
+            } else if (park.displayName.contains(welcomeParkName)){
+                verifyPark(personWelcomePark, park);
+                verifiedWelcomePark = true;
+            }
+        }
+
+        assertTrue(verifiedGrassLawnPark);
+        assertTrue(verifiedWelcomePark);
+    }
+
+    private void verifyPark(String personGrassLawn, Park park) {
+        assertEquals(1, park.people.size());
+
+        for (Person person : park.people) {
+            assertEquals(personGrassLawn, person.id);
+            assertEquals(null, person.activities);
         }
     }
 }

@@ -18,8 +18,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.*;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static java.util.UUID.randomUUID;
+import static org.junit.Assert.*;
 import static org.parkpickup.api.ActivityEnum.BASKETBALL;
 import static org.parkpickup.api.ActivityEnum.TENNIS;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.DEFINED_PORT;
@@ -70,25 +70,53 @@ public class SetActivitiesIntegrationTest {
 
     @Test
     public void noActivitiesSet_shouldStillReturnPeople() throws RequestFailedException {
-        String expectedDeviceId = UUID.randomUUID().toString();
+        Set<String> people = new HashSet<>(Arrays.asList(new String[]{randomUUID().toString(), randomUUID().toString()}));
         Location grassLawnLocation = new Location(47.667327, -122.147080);
         int radiusMeters = 5000;
 
         String expectedParkName = "Grass Lawn Park";
 
-        this.client.updateLocation(expectedDeviceId, grassLawnLocation);
+        for(String deviceId : people) {
+            this.client.updateLocation(deviceId, grassLawnLocation);
+        }
+
         Collection<Park> parks = this.client.getParks(grassLawnLocation.lat, grassLawnLocation.lng, radiusMeters, null);
 
         assertEquals(1, parks.size());
 
         for (Park park : parks) {
             assertTrue(park.displayName.contains(expectedParkName));
-            assertEquals(1, park.people.size());
+            assertEquals(2, park.people.size());
+
+            for (Person person : park.people) {
+                people.remove(person.id);
+                assertEquals(null, person.activities);
+            }
+
+            assertEquals(0, people.size());
+        }
+    }
+
+    @Test
+    public void noActivitiesSet_getWithFilteredActivities_stillReturnPeople() throws RequestFailedException {
+        String expectedDeviceId = UUID.randomUUID().toString();
+        Location grassLawnLocation = new Location(47.667327, -122.147080);
+        int radiusMeters = 5000;
+        String expectedParkName = "Grass Lawn Park";
+
+        Set<ActivityEnum> expectedActivities = new HashSet<>(Arrays.asList(new ActivityEnum[]{TENNIS, BASKETBALL}));
+
+        this.client.updateLocation(expectedDeviceId, grassLawnLocation);
+        Collection<Park> parks = this.client.getParks(grassLawnLocation.lat, grassLawnLocation.lng, radiusMeters, expectedActivities);
+        assertEquals(1, parks.size());
+
+        for (Park park : parks) {
+            assertTrue(park.displayName.contains(expectedParkName));
             assertEquals(1, park.people.size());
 
             for (Person person : park.people) {
                 assertEquals(expectedDeviceId, person.id);
-                assertEquals(null, person.activities);
+                assertNull(person.activities);
             }
         }
     }
@@ -101,7 +129,6 @@ public class SetActivitiesIntegrationTest {
 
         for (Park park : parks) {
             assertTrue(park.displayName.contains(expectedParkName));
-            assertEquals(1, park.people.size());
             assertEquals(1, park.people.size());
 
             for (Person person : park.people) {
