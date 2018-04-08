@@ -26,7 +26,7 @@ public class PbfToDbEtl {
     @Inject
     private DataSourceFactory dataSourceFactory;
 
-    public void run(String pbfSingleDir) {
+    public void loadSinglePbf(String pbfSingleDir) {
         EntityFilter filter = new EntityFilter(false, true, true);
         Osmonaut naut = new Osmonaut(pbfSingleDir, filter);
         naut.scan(osmonautReceiver);

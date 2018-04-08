@@ -1,12 +1,12 @@
 package org.parkpickup.api;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Person {
     public final String id;
     public final String displayName;
-    public final List<ActivityEnum> activities;
+    public final Set<ActivityEnum> activities;
 
     public Person() {
         this.id = null;
@@ -15,7 +15,7 @@ public class Person {
     }
 
     // - For mobile client to send
-    public Person(String id, String displayName, List<ActivityEnum> activities) {
+    public Person(String id, String displayName, Set<ActivityEnum> activities) {
         this.id = id;
         this.displayName = displayName;
         this.activities = activities;
@@ -28,9 +28,9 @@ public class Person {
         this.activities = stringToEnum(activities);
     }
 
-    private List<ActivityEnum> stringToEnum(String activitiesString) {
+    private Set<ActivityEnum> stringToEnum(String activitiesString) {
         String[] activitiesArr = activitiesString.split(",");
-        List<ActivityEnum> activities = new ArrayList<ActivityEnum>();
+        Set<ActivityEnum> activities = new HashSet<>();
 
         for (String activity : activitiesArr) {
             activities.add(ActivityEnum.valueOf(activity));

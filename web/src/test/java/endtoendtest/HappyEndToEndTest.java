@@ -7,6 +7,7 @@ import org.parkpickup.Application;
 import org.parkpickup.api.ActivityEnum;
 import org.parkpickup.api.Location;
 import org.parkpickup.api.Park;
+import org.parkpickup.api.Person;
 import org.parkpickup.api.exception.RequestFailedException;
 import org.parkpickup.client.ClientEnv;
 import org.parkpickup.client.ParkPickupV1Client;
@@ -17,6 +18,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.*;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.parkpickup.api.ActivityEnum.BASKETBALL;
 import static org.parkpickup.api.ActivityEnum.TENNIS;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.DEFINED_PORT;
@@ -40,15 +43,32 @@ public class HappyEndToEndTest {
 
     @Test
     public void setActivities_gotoGrassLawnPark_getNearbyParks500MetersAwayFromGrasslawn() throws RequestFailedException {
-        String deviceId = UUID.randomUUID().toString();
-        Set<ActivityEnum> activities = new HashSet<>(Arrays.asList(new ActivityEnum[]{TENNIS, BASKETBALL}));
+        String expectedDeviceId = UUID.randomUUID().toString();
+        Set<ActivityEnum> expectedActivities = new HashSet<>(Arrays.asList(new ActivityEnum[]{TENNIS, BASKETBALL}));
         Location grassLawnLocation = new Location(47.667327, -122.147080);
         int radiusMeters = 5000;
 
         String expectedParkName = "Grass Lawn Park";
 
-        this.client.setActivities(deviceId, activities);
-        this.client.updateLocation(deviceId, grassLawnLocation);
-        Collection<Park> parks = this.client.getParks(grassLawnLocation.lat, grassLawnLocation.lng, radiusMeters, activities);
+        this.client.setActivities(expectedDeviceId, expectedActivities);
+        this.client.updateLocation(expectedDeviceId, grassLawnLocation);
+        Collection<Park> parks = this.client.getParks(grassLawnLocation.lat, grassLawnLocation.lng, radiusMeters, expectedActivities);
+
+        assertEquals(1, parks.size());
+
+        for (Park park : parks) {
+            assertTrue(park.displayName.contains(expectedParkName));
+            assertEquals(1, park.people.size());
+            assertEquals(1, park.people.size());
+
+            for (Person person : park.people) {
+                assertEquals(expectedDeviceId, person.id);
+                assertEquals(2, expectedActivities.size());
+
+                for (ActivityEnum activity : person.activities) {
+                    assertTrue(expectedActivities.contains(activity));
+                }
+            }
+        }
     }
 }

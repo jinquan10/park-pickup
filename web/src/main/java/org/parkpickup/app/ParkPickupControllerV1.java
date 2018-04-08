@@ -5,7 +5,6 @@ import org.parkpickup.api.Location;
 import org.parkpickup.api.Park;
 import org.parkpickup.api.ParkPickupV1;
 import org.parkpickup.db.ParkPickupDao;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +18,6 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
-@Component
 @Controller
 public class ParkPickupControllerV1 implements ParkPickupV1 {
     @Inject
@@ -35,7 +33,7 @@ public class ParkPickupControllerV1 implements ParkPickupV1 {
     @Override
     @ResponseBody
     @ResponseStatus(OK)
-    @RequestMapping(method = GET, path = getPopulatedParksPath, produces = APPLICATION_JSON_VALUE)
+    @RequestMapping(method = GET, path = getParksPath, produces = APPLICATION_JSON_VALUE)
     public Collection<Park> getParks(
             @RequestParam double lat,
             @RequestParam double lng,

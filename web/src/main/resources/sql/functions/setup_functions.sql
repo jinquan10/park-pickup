@@ -19,9 +19,9 @@ BEGIN
       VALUES
         (deviceId, withinParkId, extract(EPOCH FROM now()))
       ON CONFLICT
-        (deviceId)
+        (device_id)
       DO UPDATE SET
-        (park_id, last_updated) = (withinParkId,extract(EPOCH FROM now()))
+        (park_id, last_updated) = (withinParkId, extract(EPOCH FROM now()))
       WHERE
         rel_person_park.device_id = deviceId;
   END IF;

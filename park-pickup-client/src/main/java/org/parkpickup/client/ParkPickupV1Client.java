@@ -12,7 +12,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 import java.util.Set;
 
 import static org.parkpickup.client.Util.OBJECT_MAPPER;
@@ -54,7 +53,7 @@ public class ParkPickupV1Client implements ParkPickupV1 {
     @Override
     public Collection<Park> getParks(double lat, double lng, int radiusMeters, Set<ActivityEnum> activities) throws RequestFailedException {
         try {
-            String path = String.format(getPopulatedParksPath + "?lat=%s&lng=%s&radiusMeters=%s", lat, lng, radiusMeters);
+            String path = String.format(getParksPath + "?lat=%s&lng=%s&radiusMeters=%s", lat, lng, radiusMeters);
 
             StringBuilder sb = new StringBuilder();
             for (ActivityEnum activity : activities) {
