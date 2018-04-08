@@ -51,25 +51,21 @@ public class SetActivitiesIntegrationTest {
         String expectedParkName = "Grass Lawn Park";
 
         this.client.setActivities(expectedDeviceId, expectedActivities);
-        this.client.updateLocation(expectedDeviceId, grassLawnLocation);
-        Collection<Park> parks = this.client.getParks(grassLawnLocation.lat, grassLawnLocation.lng, radiusMeters, expectedActivities);
+        setActivitiesValidation(expectedDeviceId, expectedActivities, grassLawnLocation, radiusMeters, expectedParkName);
+    }
 
-        assertEquals(1, parks.size());
+    @Test
+    public void activitiesSetTwice_shouldNotAffectOutcome() throws RequestFailedException {
+        String expectedDeviceId = UUID.randomUUID().toString();
+        Set<ActivityEnum> expectedActivities = new HashSet<>(Arrays.asList(new ActivityEnum[]{TENNIS, BASKETBALL}));
+        Location grassLawnLocation = new Location(47.667327, -122.147080);
+        int radiusMeters = 5000;
 
-        for (Park park : parks) {
-            assertTrue(park.displayName.contains(expectedParkName));
-            assertEquals(1, park.people.size());
-            assertEquals(1, park.people.size());
+        String expectedParkName = "Grass Lawn Park";
 
-            for (Person person : park.people) {
-                assertEquals(expectedDeviceId, person.id);
-                assertEquals(2, person.activities.size());
-
-                for (ActivityEnum activity : person.activities) {
-                    assertTrue(expectedActivities.contains(activity));
-                }
-            }
-        }
+        this.client.setActivities(expectedDeviceId, expectedActivities);
+        this.client.setActivities(expectedDeviceId, expectedActivities);
+        setActivitiesValidation(expectedDeviceId, expectedActivities, grassLawnLocation, radiusMeters, expectedParkName);
     }
 
     @Test
@@ -97,8 +93,25 @@ public class SetActivitiesIntegrationTest {
         }
     }
 
-    @Test
-    public void activitiesSetTwice_shouldNotAffectOutcome() {
+    private void setActivitiesValidation(String expectedDeviceId, Set<ActivityEnum> expectedActivities, Location grassLawnLocation, int radiusMeters, String expectedParkName) throws RequestFailedException {
+        this.client.updateLocation(expectedDeviceId, grassLawnLocation);
+        Collection<Park> parks = this.client.getParks(grassLawnLocation.lat, grassLawnLocation.lng, radiusMeters, expectedActivities);
 
+        assertEquals(1, parks.size());
+
+        for (Park park : parks) {
+            assertTrue(park.displayName.contains(expectedParkName));
+            assertEquals(1, park.people.size());
+            assertEquals(1, park.people.size());
+
+            for (Person person : park.people) {
+                assertEquals(expectedDeviceId, person.id);
+                assertEquals(2, person.activities.size());
+
+                for (ActivityEnum activity : person.activities) {
+                    assertTrue(expectedActivities.contains(activity));
+                }
+            }
+        }
     }
 }
