@@ -69,6 +69,34 @@ public class SetActivitiesIntegrationTest {
     }
 
     @Test
+    public void activitiesNulled() throws RequestFailedException {
+        String expectedDeviceId = UUID.randomUUID().toString();
+        Set<ActivityEnum> expectedActivities = new HashSet<>(Arrays.asList(new ActivityEnum[]{TENNIS, BASKETBALL}));
+        Location grassLawnLocation = new Location(47.667327, -122.147080);
+        int radiusMeters = 5000;
+
+        String expectedParkName = "Grass Lawn Park";
+
+        this.client.setActivities(expectedDeviceId, expectedActivities);
+        setActivitiesValidation(expectedDeviceId, expectedActivities, grassLawnLocation, radiusMeters, expectedParkName);
+
+        // - Null out activities
+        this.client.setActivities(expectedDeviceId, null);
+        Collection<Park> parks = this.client.getParks(grassLawnLocation.lat, grassLawnLocation.lng, radiusMeters, expectedActivities);
+        assertEquals(1, parks.size());
+
+        for (Park park : parks) {
+            assertTrue(park.displayName.contains(expectedParkName));
+            assertEquals(1, park.people.size());
+
+            for (Person person : park.people) {
+                assertEquals(expectedDeviceId, person.id);
+                assertEquals(null, person.activities);
+            }
+        }
+    }
+
+    @Test
     public void noActivitiesSet_shouldStillReturnPeople() throws RequestFailedException {
         Set<String> people = new HashSet<>(Arrays.asList(new String[]{randomUUID().toString(), randomUUID().toString()}));
         Location grassLawnLocation = new Location(47.667327, -122.147080);

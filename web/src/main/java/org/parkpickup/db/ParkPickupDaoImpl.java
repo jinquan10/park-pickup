@@ -99,13 +99,17 @@ public class ParkPickupDaoImpl extends BaseDao implements ParkPickupDao {
 
     @Override
     public void setActivities(String deviceId, Set<ActivityEnum> activities) {
-        StringBuilder sb = new StringBuilder();
-        for (ActivityEnum activity : activities) {
-            sb.append(activity);
-            sb.append(",");
-        }
+        String activitiesString = null;
 
-        String activitiesString = sb.toString();
+        if (activities != null) {
+            StringBuilder sb = new StringBuilder();
+            for (ActivityEnum activity : activities) {
+                sb.append(activity);
+                sb.append(",");
+            }
+
+            activitiesString = sb.toString();
+        }
 
         int rowsAffected = jdbcTemplate.update(this.setActivitiesSql, deviceId, activitiesString, activitiesString, deviceId);
 
