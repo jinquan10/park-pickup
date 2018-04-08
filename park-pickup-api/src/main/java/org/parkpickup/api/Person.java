@@ -29,6 +29,10 @@ public class Person {
     }
 
     private Set<ActivityEnum> stringToEnum(String activitiesString) {
+        if (activitiesString == null) {
+            return null;
+        }
+
         String[] activitiesArr = activitiesString.split(",");
         Set<ActivityEnum> activities = new HashSet<>();
 

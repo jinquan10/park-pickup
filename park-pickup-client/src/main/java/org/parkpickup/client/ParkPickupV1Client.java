@@ -56,9 +56,12 @@ public class ParkPickupV1Client implements ParkPickupV1 {
             String path = String.format(getParksPath + "?lat=%s&lng=%s&radiusMeters=%s", lat, lng, radiusMeters);
 
             StringBuilder sb = new StringBuilder();
-            for (ActivityEnum activity : activities) {
-                sb.append("&activities=");
-                sb.append(activity);
+
+            if (activities != null) {
+                for (ActivityEnum activity : activities) {
+                    sb.append("&activities=");
+                    sb.append(activity);
+                }
             }
 
             path += sb.toString();

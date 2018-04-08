@@ -1,4 +1,4 @@
-package endtoendtest;
+package integrationtest;
 
 import org.junit.Ignore;
 import org.junit.Test;

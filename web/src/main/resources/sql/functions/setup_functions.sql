@@ -25,6 +25,14 @@ BEGIN
       WHERE
         rel_person_park.device_id = deviceId;
   END IF;
+
+  INSERT INTO
+    person (id)
+  VALUES
+    (deviceId)
+  On CONFLICT
+    (id)
+  DO NOTHING;
 END;
 $$ LANGUAGE plpgsql;
 

@@ -38,7 +38,7 @@ public class ParkPickupControllerV1 implements ParkPickupV1 {
             @RequestParam double lat,
             @RequestParam double lng,
             @RequestParam int radiusMeters,
-            @RequestParam Set<ActivityEnum> activities) {
+            @RequestParam(required = false) Set<ActivityEnum> activities) {
         return parkPickupDao.getParks(lat, lng, radiusMeters, activities);
     }
 
