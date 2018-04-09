@@ -1,19 +1,10 @@
 package integrationtest;
 
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.parkpickup.Application;
 import org.parkpickup.api.Location;
 import org.parkpickup.api.Park;
 import org.parkpickup.api.Person;
 import org.parkpickup.api.exception.RequestFailedException;
-import org.parkpickup.client.ClientEnv;
-import org.parkpickup.client.ParkPickupV1Client;
-import org.parkpickup.db.init.PersistenceInit;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -23,25 +14,8 @@ import java.util.Set;
 import static java.util.UUID.randomUUID;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.DEFINED_PORT;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = DEFINED_PORT, classes = Application.class)
-public class UpdateLocationIntegrationTest {
-    private static final ParkPickupV1Client client = new ParkPickupV1Client(ClientEnv.TEST);
-
-    static {
-        System.setProperty("env", "test");
-    }
-
-    @Autowired
-    private PersistenceInit persistenceInit;
-
-    @Before
-    public void before() {
-        this.persistenceInit.resetDBDynamicData();
-    }
-
+public class UpdateLocationIntegrationTest extends BaseIntegrationTest {
     @Test
     public void updateLocationTwice_ShouldHaveNoEffectOnReturnValue() throws RequestFailedException {
         String expectedDeviceId = randomUUID().toString();
