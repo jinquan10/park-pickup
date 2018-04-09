@@ -104,7 +104,7 @@ public class SetActivitiesIntegrationTest {
 
         String expectedParkName = "Grass Lawn Park";
 
-        for(String deviceId : people) {
+        for (String deviceId : people) {
             this.client.updateLocation(deviceId, grassLawnLocation);
         }
 
@@ -146,6 +146,106 @@ public class SetActivitiesIntegrationTest {
                 assertEquals(expectedDeviceId, person.id);
                 assertNull(person.activities);
             }
+        }
+    }
+
+    @Test
+    public void onePersonHasActivitiesSet_findWithFilter_returnsBothPeople() throws RequestFailedException {
+        // - one person set activity basketball
+        // - one person set nothing
+        // - find with basketball
+        // - should return both people
+
+        String personBasketball = randomUUID().toString();
+        String personNothingSet = randomUUID().toString();
+        Location grassLawnLocation = new Location(47.667327, -122.147080);
+        String grassLawnName = "Grass Lawn Park";
+        int radiusMeters = 5000;
+        Set<ActivityEnum> basketballActivity = new HashSet<>(Arrays.asList(new ActivityEnum[]{BASKETBALL}));
+
+        this.client.updateLocation(personBasketball, grassLawnLocation);
+        this.client.updateLocation(personNothingSet, grassLawnLocation);
+
+        this.client.setActivities(personBasketball, basketballActivity);
+
+        // - Get both people
+        Collection<Park> parks = this.client.getParks(grassLawnLocation.lat, grassLawnLocation.lng, radiusMeters, basketballActivity);
+        assertEquals(1, parks.size());
+
+        for (Park park : parks) {
+            assertEquals(grassLawnName, park.displayName);
+            assertEquals(2, park.people.size());
+
+            boolean activityBasketball = false;
+            boolean activityNothing = false;
+            for (Person person : park.people) {
+                if (person.activities == null) {
+                    activityNothing = true;
+                } else if (person.activities.contains(BASKETBALL)) {
+                    activityBasketball = true;
+                }
+            }
+
+            assertTrue(activityBasketball);
+            assertTrue(activityNothing);
+        }
+    }
+
+    @Test
+    public void multipleParks_multiplePeople_differentActivities() throws RequestFailedException {
+        String personGrassLawn = randomUUID().toString();
+        String personWelcomePark = randomUUID().toString();
+        Location welcomeParkLocation = new Location(47.676511, -122.152171);
+        Location grassLawnLocation = new Location(47.667327, -122.147080);
+        String grassLawnName = "Grass Lawn Park";
+        String welcomeParkName = "Welcome Park";
+        int radiusMeters = 5000;
+        Set<ActivityEnum> tennisActivity = new HashSet<>(Arrays.asList(new ActivityEnum[]{TENNIS}));
+        Set<ActivityEnum> basketballActivity = new HashSet<>(Arrays.asList(new ActivityEnum[]{BASKETBALL}));
+
+        this.client.updateLocation(personGrassLawn, grassLawnLocation);
+        this.client.updateLocation(personWelcomePark, welcomeParkLocation);
+
+        this.client.setActivities(personGrassLawn, tennisActivity);
+        this.client.setActivities(personWelcomePark, basketballActivity);
+
+        // - Get both people
+        Collection<Park> parks = this.client.getParks(grassLawnLocation.lat, grassLawnLocation.lng, radiusMeters, null);
+        assertEquals(2, parks.size());
+
+        boolean verifiedGrassLawnPark = false;
+        boolean verifiedWelcomePark = false;
+        for (Park park : parks) {
+            if (park.displayName.contains(grassLawnName)) {
+                verifyPark(personGrassLawn, park, TENNIS);
+                verifiedGrassLawnPark = true;
+            } else if (park.displayName.contains(welcomeParkName)) {
+                verifyPark(personWelcomePark, park, BASKETBALL);
+                verifiedWelcomePark = true;
+            }
+        }
+        assertTrue(verifiedGrassLawnPark);
+        assertTrue(verifiedWelcomePark);
+
+        parks = this.client.getParks(grassLawnLocation.lat, grassLawnLocation.lng, radiusMeters, new HashSet<>(Arrays.asList(new ActivityEnum[]{TENNIS})));
+        assertEquals(1, parks.size());
+        for (Park park : parks) {
+            verifyPark(personGrassLawn, park, TENNIS);
+        }
+
+        parks = this.client.getParks(grassLawnLocation.lat, grassLawnLocation.lng, radiusMeters, new HashSet<>(Arrays.asList(new ActivityEnum[]{BASKETBALL})));
+        assertEquals(1, parks.size());
+        for (Park park : parks) {
+            verifyPark(personWelcomePark, park, BASKETBALL);
+        }
+    }
+
+    private void verifyPark(String personId, Park park, ActivityEnum activity) {
+        assertEquals(1, park.people.size());
+
+        for (Person person : park.people) {
+            assertEquals(personId, person.id);
+            assertTrue(person.activities.contains(activity));
         }
     }
 

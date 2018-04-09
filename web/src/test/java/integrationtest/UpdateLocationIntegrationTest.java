@@ -122,11 +122,11 @@ public class UpdateLocationIntegrationTest {
         assertTrue(verifiedWelcomePark);
     }
 
-    private void verifyPark(String personGrassLawn, Park park) {
+    private void verifyPark(String personId, Park park) {
         assertEquals(1, park.people.size());
 
         for (Person person : park.people) {
-            assertEquals(personGrassLawn, person.id);
+            assertEquals(personId, person.id);
             assertEquals(null, person.activities);
         }
     }
