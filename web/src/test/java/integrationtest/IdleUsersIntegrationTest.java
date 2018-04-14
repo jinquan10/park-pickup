@@ -1,13 +1,14 @@
 package integrationtest;
 
-import org.junit.Before;
+import org.junit.After;
 import org.junit.Test;
+import org.parkpickup.DataCleanupManager;
 import org.parkpickup.api.Location;
 import org.parkpickup.api.Park;
 import org.parkpickup.api.Person;
 import org.parkpickup.api.exception.RequestFailedException;
-import org.parkpickup.db.CleanupOperationsDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.Collection;
 
@@ -15,17 +16,23 @@ import static java.util.UUID.randomUUID;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class PeopleLeftParkIntegrationTest extends BaseIntegrationTest {
+public class IdleUsersIntegrationTest extends BaseIntegrationTest {
     @Autowired
-    private CleanupOperationsDao cleanupOperationsDao;
+    private DataCleanupManager dataCleanupManager;
 
-    @Before
-    public void before() {
+    @Value("${idle.users.refresh.seconds}")
+    private long refreshRateSeconds;
 
+    @Value("${idle.users.ttl.seconds}")
+    private long ttlSeconds;
+
+    @After
+    public void after() throws InterruptedException {
+        this.dataCleanupManager.reschedule(this.refreshRateSeconds, this.ttlSeconds);
     }
 
     @Test
-    public void foo() throws RequestFailedException {
+    public void visitPark_rescheduleTtl_0ParksReturned() throws RequestFailedException, InterruptedException {
         String expectedDeviceId = randomUUID().toString();
         Location grassLawnLocation = new Location(47.667327, -122.147080);
         int radiusMeters = 5000;
@@ -42,7 +49,10 @@ public class PeopleLeftParkIntegrationTest extends BaseIntegrationTest {
             verifyPark(expectedDeviceId, park);
         }
 
-        this.cleanupOperationsDao.cleanupRelPersonPark();
+        this.dataCleanupManager.reschedule(1, 1);
+        Thread.sleep(700);
+        parks = this.client.getParks(grassLawnLocation.lat, grassLawnLocation.lng, radiusMeters, null);
+        assertEquals(0, parks.size());
     }
 
     private void verifyPark(String personId, Park park) {
@@ -53,5 +63,4 @@ public class PeopleLeftParkIntegrationTest extends BaseIntegrationTest {
             assertEquals(null, person.activities);
         }
     }
-    // idle.users.ttl.seconds
 }
