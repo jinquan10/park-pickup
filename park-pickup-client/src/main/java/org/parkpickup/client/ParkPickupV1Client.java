@@ -4,7 +4,7 @@ import org.parkpickup.api.ActivityEnum;
 import org.parkpickup.api.Location;
 import org.parkpickup.api.Park;
 import org.parkpickup.api.ParkPickupV1;
-import org.parkpickup.api.exception.RequestFailedException;
+import org.parkpickup.api.exception.UserInitiatedException;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -24,7 +24,7 @@ public class ParkPickupV1Client implements ParkPickupV1 {
     }
 
     @Override
-    public void updateLocation(String deviceId, Location location) throws RequestFailedException {
+    public void updateLocation(String deviceId, Location location) throws UserInitiatedException {
         String path = updateLocationPath.replaceFirst("\\{deviceId\\}", deviceId);
 
         try {
@@ -39,19 +39,21 @@ public class ParkPickupV1Client implements ParkPickupV1 {
 
             sendRequest(httpUrlConnection, 200);
         } catch (Throwable e) {
-            throw new RequestFailedException();
+            throw new UserInitiatedException();
         }
     }
 
-    private void sendRequest(HttpURLConnection httpUrlConnection, int expectedCode) throws IOException, RequestFailedException {
+    private void sendRequest(HttpURLConnection httpUrlConnection, int expectedCode) throws IOException,
+			UserInitiatedException {
         int responseCode = httpUrlConnection.getResponseCode();
         if (responseCode != expectedCode) {
-            throw new RequestFailedException();
+            throw new UserInitiatedException();
         }
     }
 
     @Override
-    public Collection<Park> getParks(double lat, double lng, int radiusMeters, Set<ActivityEnum> activities) throws RequestFailedException {
+    public Collection<Park> getParks(double lat, double lng, int radiusMeters, Set<ActivityEnum> activities) throws
+			UserInitiatedException {
         try {
             String path = String.format(getParksPath + "?lat=%s&lng=%s&radiusMeters=%s", lat, lng, radiusMeters);
 
@@ -77,12 +79,13 @@ public class ParkPickupV1Client implements ParkPickupV1 {
             Park[] parks = OBJECT_MAPPER.readValue(resultJsonString, Park[].class);
             return Arrays.asList(parks);
         } catch (Throwable e) {
-            throw new RequestFailedException();
+            throw new UserInitiatedException();
         }
     }
 
     @Override
-    public void setActivities(String deviceId, Set<ActivityEnum> activities) throws RequestFailedException {
+    public void setActivities(String deviceId, Set<ActivityEnum> activities) throws
+			UserInitiatedException {
         try {
             String path = setActivitiesPath.replaceFirst("\\{deviceId\\}", deviceId);
 
@@ -97,7 +100,7 @@ public class ParkPickupV1Client implements ParkPickupV1 {
 
             sendRequest(httpUrlConnection, 200);
         } catch (Throwable e) {
-            throw new RequestFailedException();
+            throw new UserInitiatedException();
         }
     }
 }

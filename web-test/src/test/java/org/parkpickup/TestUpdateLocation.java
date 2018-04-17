@@ -4,7 +4,7 @@ import org.junit.Test;
 import org.parkpickup.api.Location;
 import org.parkpickup.api.Park;
 import org.parkpickup.api.Person;
-import org.parkpickup.api.exception.RequestFailedException;
+import org.parkpickup.api.exception.UserInitiatedException;
 import org.parkpickup.client.ParkPickupV1Client;
 
 import java.util.Collection;
@@ -17,7 +17,7 @@ public class TestUpdateLocation {
     private static final ParkPickupV1Client client = new ParkPickupV1Client();
 
     @Test
-    public void populate100() throws RequestFailedException {
+    public void populate100() throws UserInitiatedException {
         for (int i = 0; i < 100; i++) {
             String deviceId = UUID.randomUUID().toString();
             Location location = new Location(47.667327, -122.147080);
@@ -27,7 +27,7 @@ public class TestUpdateLocation {
     }
 
     @Test
-    public void test() throws RequestFailedException {
+    public void test() throws UserInitiatedException {
         String deviceId = UUID.randomUUID().toString();
         Location location = new Location(47.667327, -122.147080);
         String containsParkName = "Grass";

@@ -1,11 +1,10 @@
 package org.parkpickup;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.sql.SQLException;
 
 @Component
@@ -39,5 +38,17 @@ public class Util {
         bufferedReader.close();
 
         return sb.toString();
+    }
+
+    public static Logger logger(Class<?> clazz) {
+        return LoggerFactory.getLogger(clazz);
+    }
+
+    public static String stackTrace(Throwable e) {
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        e.printStackTrace(pw);
+
+        return pw.toString();
     }
 }
