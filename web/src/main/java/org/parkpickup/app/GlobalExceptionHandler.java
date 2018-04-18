@@ -1,6 +1,6 @@
 package org.parkpickup.app;
 
-import org.parkpickup.api.exception.ClientRequestException;
+import org.parkpickup.api.exception.UserException;
 import org.parkpickup.api.exception.FailedReason;
 import org.parkpickup.api.exception.FailedRequest;
 import org.springframework.http.HttpStatus;
@@ -19,8 +19,8 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 	private static final FailedRequest failedRequest = new FailedRequest(FailedReason.SERVER_ERROR);
 
-	@ExceptionHandler(ClientRequestException.class)
-	public ResponseEntity<FailedRequest> handleUserInitiatedException(ClientRequestException e) {
+	@ExceptionHandler(UserException.class)
+	public ResponseEntity<FailedRequest> handleUserInitiatedException(UserException e) {
 		return new ResponseEntity<>(e.failedRequest, BAD_REQUEST);
 	}
 

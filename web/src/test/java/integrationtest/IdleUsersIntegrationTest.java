@@ -6,7 +6,7 @@ import org.parkpickup.DataCleanupManager;
 import org.parkpickup.api.Location;
 import org.parkpickup.api.Park;
 import org.parkpickup.api.Person;
-import org.parkpickup.api.exception.ClientRequestException;
+import org.parkpickup.api.exception.UserException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -32,7 +32,7 @@ public class IdleUsersIntegrationTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void visitPark_rescheduleTtl_0ParksReturned() throws ClientRequestException, InterruptedException {
+    public void visitPark_rescheduleTtl_0ParksReturned() throws UserException, InterruptedException {
         String expectedDeviceId = randomUUID().toString();
         Location grassLawnLocation = new Location(47.667327, -122.147080);
         int radiusMeters = 5000;
