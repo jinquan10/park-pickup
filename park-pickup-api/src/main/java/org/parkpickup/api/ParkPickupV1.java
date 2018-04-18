@@ -15,6 +15,10 @@ public interface ParkPickupV1 {
 
     String setActivitiesPath = "/park-pickup/v1/activities/{deviceId}";
     void setActivities(String deviceId, Set<ActivityEnum> activities) throws UserException, ApplicationException;
+
+    String playerNamePath = "/park-pickup/v1/player-name/{deviceId}";
+    void changePlayerName(String deviceId, PlayerName playerName) throws UserException, ApplicationException;
+
     //    void playToday(long personId, long parkId, boolean isPlayingToday);
 //    void requestPickupGame(long personId, long parkId);
 }

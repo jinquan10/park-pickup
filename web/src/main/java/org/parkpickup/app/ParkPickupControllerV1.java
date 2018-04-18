@@ -1,9 +1,8 @@
 package org.parkpickup.app;
 
-import org.parkpickup.api.ActivityEnum;
-import org.parkpickup.api.Location;
-import org.parkpickup.api.Park;
-import org.parkpickup.api.ParkPickupV1;
+import org.parkpickup.api.*;
+import org.parkpickup.api.exception.ApplicationException;
+import org.parkpickup.api.exception.UserException;
 import org.parkpickup.db.ParkPickupDao;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -46,5 +45,12 @@ public class ParkPickupControllerV1 implements ParkPickupV1 {
     @RequestMapping(method = PUT, path = setActivitiesPath, consumes = APPLICATION_JSON_VALUE)
     public void setActivities(@PathVariable String deviceId, @RequestBody(required = false) Set<ActivityEnum> activities) {
         this.parkPickupDao.setActivities(deviceId, activities);
+    }
+
+    @Override
+    @ResponseStatus(OK)
+    @RequestMapping(method = PUT, path = playerNamePath, consumes = APPLICATION_JSON_VALUE)
+    public void changePlayerName(String deviceId, PlayerName playerName) throws UserException, ApplicationException {
+
     }
 }

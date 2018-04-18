@@ -1,9 +1,6 @@
 package org.parkpickup.client;
 
-import org.parkpickup.api.ActivityEnum;
-import org.parkpickup.api.Location;
-import org.parkpickup.api.Park;
-import org.parkpickup.api.ParkPickupV1;
+import org.parkpickup.api.*;
 import org.parkpickup.api.exception.ApplicationException;
 import org.parkpickup.api.exception.FailedRequest;
 import org.parkpickup.api.exception.UserException;
@@ -74,7 +71,15 @@ public class ParkPickupV1Client implements ParkPickupV1 {
         });
     }
 
-    private void doPut(String deviceId, String setActivitiesPath, String body)
+	@Override
+	public void changePlayerName(String deviceId, PlayerName playerName) throws UserException, ApplicationException {
+		this.doIt(() -> {
+			doPut(deviceId, playerNamePath, OBJECT_MAPPER.writeValueAsString(playerName));
+			return null;
+		});
+	}
+
+	private void doPut(String deviceId, String setActivitiesPath, String body)
             throws IOException, ApplicationException, UserException {
         String path = setActivitiesPath.replaceFirst("\\{deviceId\\}", deviceId);
 
