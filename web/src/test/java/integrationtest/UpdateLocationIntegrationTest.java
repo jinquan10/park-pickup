@@ -4,6 +4,7 @@ import org.junit.Test;
 import org.parkpickup.api.Location;
 import org.parkpickup.api.Park;
 import org.parkpickup.api.Person;
+import org.parkpickup.api.exception.ApplicationException;
 import org.parkpickup.api.exception.UserException;
 
 import java.util.Arrays;
@@ -17,7 +18,8 @@ import static org.junit.Assert.assertTrue;
 
 public class UpdateLocationIntegrationTest extends BaseIntegrationTest {
     @Test
-    public void updateLocationTwice_ShouldHaveNoEffectOnReturnValue() throws UserException {
+    public void updateLocationTwice_ShouldHaveNoEffectOnReturnValue()
+            throws UserException, ApplicationException {
         String expectedDeviceId = randomUUID().toString();
         Location grassLawnLocation = new Location(47.667327, -122.147080);
         int radiusMeters = 5000;
@@ -37,7 +39,7 @@ public class UpdateLocationIntegrationTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void multiplePeople_onePark_getsBothPeople() throws UserException {
+    public void multiplePeople_onePark_getsBothPeople() throws UserException, ApplicationException {
         Set<String> people = new HashSet<>(Arrays.asList(new String[]{randomUUID().toString(), randomUUID().toString()}));
         Location grassLawnLocation = new Location(47.667327, -122.147080);
         String expectedParkName = "Grass Lawn Park";
@@ -64,8 +66,8 @@ public class UpdateLocationIntegrationTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void multiplePeople_multipleParks_getsBothParks_withOnePersonEach() throws
-            UserException {
+    public void multiplePeople_multipleParks_getsBothParks_withOnePersonEach()
+            throws UserException, ApplicationException {
         String personGrassLawn = randomUUID().toString();
         String personWelcomePark = randomUUID().toString();
         Location welcomeParkLocation = new Location(47.676511, -122.152171);
