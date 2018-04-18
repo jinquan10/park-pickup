@@ -9,7 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
-import javax.validation.Valid;
 import java.util.Collection;
 import java.util.Set;
 
@@ -26,7 +25,7 @@ public class ParkPickupControllerV1 implements ParkPickupV1 {
     @Override
     @ResponseStatus(OK)
     @RequestMapping(method = PUT, path = updateLocationPath, consumes = APPLICATION_JSON_VALUE)
-    public void updateLocation(@PathVariable String deviceId, @RequestBody @Valid Location location) {
+    public void updateLocation(@PathVariable String deviceId, @RequestBody Location location) {
         parkPickupDao.updateLocation(deviceId, location.lat, location.lng);
     }
 
