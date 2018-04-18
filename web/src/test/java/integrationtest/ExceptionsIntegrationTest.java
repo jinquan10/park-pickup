@@ -3,33 +3,31 @@ package integrationtest;
 import org.junit.After;
 import org.junit.Test;
 import org.parkpickup.api.exception.ApplicationException;
-import org.parkpickup.api.exception.FailedReason;
 import org.parkpickup.api.exception.FailedRequest;
 import org.parkpickup.api.exception.UserException;
+import org.parkpickup.db.ParkPickupDao;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
+
+import java.util.Set;
 
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.*;
 import static org.parkpickup.api.exception.FailedReason.VALIDATION;
 
 public class ExceptionsIntegrationTest extends BaseIntegrationTest {
 	@MockBean
-	private JdbcTemplate mockJdbcTemplate;
+	private ParkPickupDao parkPickupDao;
 
 	@After
 	public void after() {
-		verifyNoMoreInteractions(this.mockJdbcTemplate);
+		verifyNoMoreInteractions(this.parkPickupDao);
 	}
 
 	@Test
 	public void testUserException() {
-		doThrow(new UserException(new FailedRequest(VALIDATION)))
-				.when(this.mockJdbcTemplate).query(anyString(), any(RowMapper.class));
+		when(this.parkPickupDao.getParks(anyDouble(), anyDouble(), anyInt(), any(Set.class)))
+				.thenThrow(new UserException(new FailedRequest(VALIDATION)));
 
 		boolean hasCaughtException = false;
 		try {
@@ -39,13 +37,15 @@ public class ExceptionsIntegrationTest extends BaseIntegrationTest {
 		} catch (ApplicationException e) {
 		} finally {
 			assertTrue(hasCaughtException);
+
+			verify(this.parkPickupDao).getParks(anyDouble(), anyDouble(), anyInt(), any(Set.class));
 		}
 	}
 
 	@Test
 	public void testApplicationException() {
-		doThrow(new RuntimeException())
-				.when(this.mockJdbcTemplate).query(anyString(), any(RowMapper.class));
+		when(this.parkPickupDao.getParks(anyDouble(), anyDouble(), anyInt(), any(Set.class)))
+				.thenThrow(new RuntimeException());
 
 		boolean hasCaughtException = false;
 		try {
@@ -55,6 +55,8 @@ public class ExceptionsIntegrationTest extends BaseIntegrationTest {
 			hasCaughtException = true;
 		} finally {
 			assertTrue(hasCaughtException);
+
+			verify(this.parkPickupDao).getParks(anyDouble(), anyDouble(), anyInt(), any(Set.class));
 		}
 	}
 }
