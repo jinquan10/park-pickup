@@ -26,7 +26,7 @@ public class ParkPickupV1Client implements ParkPickupV1 {
     }
 
     private interface Func {
-        Object call() throws IOException;
+        Object call() throws UserException, ApplicationException, IOException;
     }
 
     @Override
@@ -39,33 +39,31 @@ public class ParkPickupV1Client implements ParkPickupV1 {
 
     @Override
     public Collection<Park> getParks(double lat, double lng, int radiusMeters, Set<ActivityEnum> activities) throws UserException, ApplicationException {
-        try {
-            String path = String.format(getParksPath + "?lat=%s&lng=%s&radiusMeters=%s", lat, lng, radiusMeters);
+        return (Collection<Park>) this.doIt(() -> {
+			String path = String.format(getParksPath + "?lat=%s&lng=%s&radiusMeters=%s", lat, lng, radiusMeters);
 
-            StringBuilder sb = new StringBuilder();
+			StringBuilder sb = new StringBuilder();
 
-            if (activities != null) {
-                for (ActivityEnum activity : activities) {
-                    sb.append("&activities=");
-                    sb.append(activity);
-                }
-            }
+			if (activities != null) {
+				for (ActivityEnum activity : activities) {
+					sb.append("&activities=");
+					sb.append(activity);
+				}
+			}
 
-            path += sb.toString();
+			path += sb.toString();
 
-            URL url = new URL(clientEnv.getProtocol(), clientEnv.getDomain(), clientEnv.getPort(), path);
-            HttpURLConnection httpUrlConnection = (HttpURLConnection) url.openConnection();
-            httpUrlConnection.setRequestProperty("Accept", "application/json");
-            httpUrlConnection.setRequestMethod("GET");
+			URL url = new URL(clientEnv.getProtocol(), clientEnv.getDomain(), clientEnv.getPort(), path);
+			HttpURLConnection httpUrlConnection = (HttpURLConnection) url.openConnection();
+			httpUrlConnection.setRequestProperty("Accept", "application/json");
+			httpUrlConnection.setRequestMethod("GET");
 
-            sendAndGetResponse(httpUrlConnection, 200);
+			sendAndGetResponse(httpUrlConnection, 200);
 
-            String resultJsonString = Util.readFromInputStream(httpUrlConnection.getInputStream());
-            Park[] parks = OBJECT_MAPPER.readValue(resultJsonString, Park[].class);
-            return Arrays.asList(parks);
-        } catch (Throwable e) {
-            throw new UserException();
-        }
+			String resultJsonString = Util.readFromInputStream(httpUrlConnection.getInputStream());
+			Park[] parks = OBJECT_MAPPER.readValue(resultJsonString, Park[].class);
+			return Arrays.asList(parks);
+		});
     }
 
     @Override
@@ -73,7 +71,7 @@ public class ParkPickupV1Client implements ParkPickupV1 {
         this.doIt(() -> {
             doPut(deviceId, setActivitiesPath, OBJECT_MAPPER.writeValueAsString(activities));
             return null;
-        }
+        });
     }
 
     private void doPut(String deviceId, String setActivitiesPath, String body)
