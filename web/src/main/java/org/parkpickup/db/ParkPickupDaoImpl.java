@@ -23,12 +23,14 @@ public class ParkPickupDaoImpl extends BaseDao implements ParkPickupDao {
     private SimpleJdbcCall updatePersonLocation;
     private String getPopulatedParksSql;
     private String setActivitiesSql;
+    private String changePlayerNameSql;
 
-    @PostConstruct
+	@PostConstruct
     public void postConstruct() throws IOException, SQLException {
         this.updatePersonLocation = new SimpleJdbcCall(jdbcTemplate).withFunctionName("update_person_location");
         this.getPopulatedParksSql = util.getSqlStatementFromFile("sql/query/query_parks.sql");
         this.setActivitiesSql = util.getSqlStatementFromFile("sql/upsert/set_activities.sql");
+        this.changePlayerNameSql = util.getSqlStatementFromFile("sql/update/change_player_name.sql");
     }
 
     @Override
@@ -118,4 +120,9 @@ public class ParkPickupDaoImpl extends BaseDao implements ParkPickupDao {
             throw new RuntimeException();
         }
     }
+
+	@Override
+	public void changePlayerName(String deviceId, String name) {
+
+	}
 }

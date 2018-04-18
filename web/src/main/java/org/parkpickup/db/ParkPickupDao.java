@@ -10,4 +10,5 @@ public interface ParkPickupDao {
     void updateLocation(String deviceId, double lat, double lng);
     Collection<Park> getParks(double lat, double lng, int radiusMeters, Set<ActivityEnum> activities);
     void setActivities(String deviceId, Set<ActivityEnum> activities);
+    void changePlayerName(String deviceId, String name);
 }
