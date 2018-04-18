@@ -5,7 +5,7 @@ import org.parkpickup.api.ActivityEnum;
 import org.parkpickup.api.Location;
 import org.parkpickup.api.Park;
 import org.parkpickup.api.Person;
-import org.parkpickup.api.exception.UserInitiatedException;
+import org.parkpickup.api.exception.ClientRequestException;
 
 import java.util.*;
 
@@ -17,7 +17,7 @@ import static org.parkpickup.api.ActivityEnum.TENNIS;
 public class SetActivitiesIntegrationTest extends BaseIntegrationTest {
     @Test
     public void setActivities_gotoGrassLawnPark_getNearbyParks500MetersAwayFromGrasslawn() throws
-			UserInitiatedException {
+            ClientRequestException {
         String expectedDeviceId = UUID.randomUUID().toString();
         Set<ActivityEnum> expectedActivities = new HashSet<>(Arrays.asList(new ActivityEnum[]{TENNIS, BASKETBALL}));
         Location grassLawnLocation = new Location(47.667327, -122.147080);
@@ -30,7 +30,7 @@ public class SetActivitiesIntegrationTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void activitiesSetTwice_shouldNotAffectOutcome() throws UserInitiatedException {
+    public void activitiesSetTwice_shouldNotAffectOutcome() throws ClientRequestException {
         String expectedDeviceId = UUID.randomUUID().toString();
         Set<ActivityEnum> expectedActivities = new HashSet<>(Arrays.asList(new ActivityEnum[]{TENNIS, BASKETBALL}));
         Location grassLawnLocation = new Location(47.667327, -122.147080);
@@ -44,7 +44,7 @@ public class SetActivitiesIntegrationTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void activitiesNulled() throws UserInitiatedException {
+    public void activitiesNulled() throws ClientRequestException {
         String expectedDeviceId = UUID.randomUUID().toString();
         Set<ActivityEnum> expectedActivities = new HashSet<>(Arrays.asList(new ActivityEnum[]{TENNIS, BASKETBALL}));
         Location grassLawnLocation = new Location(47.667327, -122.147080);
@@ -72,7 +72,7 @@ public class SetActivitiesIntegrationTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void noActivitiesSet_shouldStillReturnPeople() throws UserInitiatedException {
+    public void noActivitiesSet_shouldStillReturnPeople() throws ClientRequestException {
         Set<String> people = new HashSet<>(Arrays.asList(new String[]{randomUUID().toString(), randomUUID().toString()}));
         Location grassLawnLocation = new Location(47.667327, -122.147080);
         int radiusMeters = 5000;
@@ -102,7 +102,7 @@ public class SetActivitiesIntegrationTest extends BaseIntegrationTest {
 
     @Test
     public void noActivitiesSet_getWithFilteredActivities_stillReturnPeople() throws
-			UserInitiatedException {
+            ClientRequestException {
         String expectedDeviceId = UUID.randomUUID().toString();
         Location grassLawnLocation = new Location(47.667327, -122.147080);
         int radiusMeters = 5000;
@@ -127,7 +127,7 @@ public class SetActivitiesIntegrationTest extends BaseIntegrationTest {
 
     @Test
     public void onePersonHasActivitiesSet_findWithFilter_returnsBothPeople() throws
-			UserInitiatedException {
+            ClientRequestException {
         // - one person set activity basketball
         // - one person set nothing
         // - find with basketball
@@ -169,7 +169,7 @@ public class SetActivitiesIntegrationTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void multipleParks_multiplePeople_differentActivities() throws UserInitiatedException {
+    public void multipleParks_multiplePeople_differentActivities() throws ClientRequestException {
         String personGrassLawn = randomUUID().toString();
         String personWelcomePark = randomUUID().toString();
         Location welcomeParkLocation = new Location(47.676511, -122.152171);
@@ -227,7 +227,7 @@ public class SetActivitiesIntegrationTest extends BaseIntegrationTest {
     }
 
     private void setActivitiesValidation(String expectedDeviceId, Set<ActivityEnum> expectedActivities, Location grassLawnLocation, int radiusMeters, String expectedParkName) throws
-			UserInitiatedException {
+            ClientRequestException {
         this.client.updateLocation(expectedDeviceId, grassLawnLocation);
         Collection<Park> parks = this.client.getParks(grassLawnLocation.lat, grassLawnLocation.lng, radiusMeters, expectedActivities);
 

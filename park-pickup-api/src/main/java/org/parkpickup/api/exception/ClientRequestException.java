@@ -1,9 +1,9 @@
 package org.parkpickup.api.exception;
 
-public class UserInitiatedException extends Exception {
+public class ClientRequestException extends Exception {
 	public final FailedRequest failedRequest;
 
-	public UserInitiatedException(FailedRequest failedRequest) {
+	public ClientRequestException(FailedRequest failedRequest) {
 		this.failedRequest = failedRequest;
 	}
 }
