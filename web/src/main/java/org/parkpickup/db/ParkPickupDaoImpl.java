@@ -30,7 +30,7 @@ public class ParkPickupDaoImpl extends BaseDao implements ParkPickupDao {
         this.updatePersonLocation = new SimpleJdbcCall(jdbcTemplate).withFunctionName("update_person_location");
         this.getPopulatedParksSql = util.getSqlStatementFromFile("sql/query/query_parks.sql");
         this.setActivitiesSql = util.getSqlStatementFromFile("sql/upsert/set_activities.sql");
-        this.changePlayerNameSql = util.getSqlStatementFromFile("sql/update/change_player_name.sql");
+        this.changePlayerNameSql = util.getSqlStatementFromFile("sql/upsert/change_player_name.sql");
     }
 
     @Override
@@ -113,16 +113,20 @@ public class ParkPickupDaoImpl extends BaseDao implements ParkPickupDao {
             activitiesString = sb.toString();
         }
 
-        int rowsAffected = jdbcTemplate.update(this.setActivitiesSql, deviceId, activitiesString, activitiesString, deviceId);
-
-        if (rowsAffected != 1) {
-            LOGGER.error(String.format("Should only have affected 1 row, deviceId: %s", deviceId));
-            throw new RuntimeException();
-        }
+        upsert(deviceId, activitiesString);
     }
 
 	@Override
 	public void changePlayerName(String deviceId, String name) {
+		upsert(deviceId, name);
+	}
 
+	private void upsert(String deviceId, String fieldValue) {
+		int rowsAffected = jdbcTemplate.update(this.setActivitiesSql, deviceId, fieldValue, fieldValue, deviceId);
+
+		if (rowsAffected != 1) {
+			LOGGER.error(String.format("Should have affected exactly 1 row, deviceId: %s", deviceId));
+			throw new RuntimeException();
+		}
 	}
 }
