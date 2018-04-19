@@ -52,7 +52,7 @@ public class IdleUsersIntegrationTest extends BaseIntegrationTest {
         }
 
         this.dataCleanupManager.reschedule(1, 1);
-        Thread.sleep(700);
+        Thread.sleep(1000);
         parks = this.client.getParks(grassLawnLocation.lat, grassLawnLocation.lng, radiusMeters, null);
         assertEquals(0, parks.size());
     }
