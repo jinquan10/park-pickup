@@ -15,7 +15,7 @@ import java.util.Set;
 
 import static org.parkpickup.client.Util.OBJECT_MAPPER;
 
-public class ParkPickupV1Client implements ParkPickupV1 {
+public class ParkPickupV1Client implements ParkPickupContorllerV1 {
     private final ClientEnv clientEnv;
 
     public ParkPickupV1Client(ClientEnv clientEnv) {

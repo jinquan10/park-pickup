@@ -17,7 +17,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
 @Controller
-public class ParkPickupControllerV1 implements ParkPickupV1 {
+public class ParkPickupControllerV1Impl implements ParkPickupContorllerV1 {
     @Inject
     private ParkPickupDao parkPickupDao;
 

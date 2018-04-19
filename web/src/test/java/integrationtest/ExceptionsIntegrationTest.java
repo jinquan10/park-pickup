@@ -7,7 +7,7 @@ import org.mockito.Mockito;
 import org.parkpickup.api.PlayerName;
 import org.parkpickup.api.exception.ApplicationException;
 import org.parkpickup.api.exception.UserException;
-import org.parkpickup.app.ParkPickupControllerV1;
+import org.parkpickup.app.ParkPickupControllerV1Impl;
 import org.parkpickup.db.ParkPickupDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
@@ -25,7 +25,7 @@ public class ExceptionsIntegrationTest extends BaseIntegrationTest {
     private ParkPickupDao parkPickupDao = Mockito.mock(ParkPickupDao.class);
 
     @Autowired
-    private ParkPickupControllerV1 parkPickupControllerV1;
+    private ParkPickupControllerV1Impl parkPickupControllerV1;
 
     @Before
     public void before() {

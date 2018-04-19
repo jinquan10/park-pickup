@@ -6,7 +6,7 @@ import org.parkpickup.api.exception.UserException;
 import java.util.Collection;
 import java.util.Set;
 
-public interface ParkPickupV1 {
+public interface ParkPickupContorllerV1 {
     String updateLocationPath = "/park-pickup/v1/location/{deviceId}";
     void updateLocation(String deviceId, Location location) throws UserException, ApplicationException;
 
