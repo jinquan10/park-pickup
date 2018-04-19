@@ -101,7 +101,7 @@ public class ParkPickupV1Client implements ParkPickupV1 {
 
         if (responseCode != expectedCode) {
             if (responseCode == 400) {
-                String resultJsonString = Util.readFromInputStream(httpUrlConnection.getInputStream());
+                String resultJsonString = Util.readFromInputStream(httpUrlConnection.getErrorStream());
                 throw new UserException(OBJECT_MAPPER.readValue(resultJsonString, FailedRequest.class));
             } else if (responseCode == 500) {
                 throw new ApplicationException(null);

@@ -15,6 +15,10 @@ public class PlayerName {
 	public static final String errorMessage = "Player name needs to have more than 3 letters, but less than 32.";
 	public final String playerName;
 
+	public PlayerName() {
+		this.playerName = null;
+	}
+
 	public PlayerName(String playerName) {
 		this.playerName = playerName;
 	}
