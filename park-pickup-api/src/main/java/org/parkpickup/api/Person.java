@@ -5,26 +5,26 @@ import java.util.Set;
 
 public class Person {
     public final String id;
-    public final String displayName;
+    public final String playerName;
     public final Set<ActivityEnum> activities;
 
     public Person() {
         this.id = null;
-        this.displayName = null;
+        this.playerName = null;
         this.activities = null;
     }
 
     // - For mobile client to send
-    public Person(String id, String displayName, Set<ActivityEnum> activities) {
+    public Person(String id, String playerName, Set<ActivityEnum> activities) {
         this.id = id;
-        this.displayName = displayName;
+        this.playerName = playerName;
         this.activities = activities;
     }
 
     // - For DB to return to mobile
-    public Person(String id, String displayName, String activities) {
+    public Person(String id, String playerName, String activities) {
         this.id = id;
-        this.displayName = displayName;
+        this.playerName = playerName;
         this.activities = stringToEnum(activities);
     }
 

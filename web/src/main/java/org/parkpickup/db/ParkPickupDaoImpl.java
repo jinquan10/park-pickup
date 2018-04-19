@@ -113,16 +113,16 @@ public class ParkPickupDaoImpl extends BaseDao implements ParkPickupDao {
             activitiesString = sb.toString();
         }
 
-        upsert(deviceId, activitiesString);
+        upsert(this.setActivitiesSql, deviceId, activitiesString);
     }
 
 	@Override
 	public void changePlayerName(String deviceId, String name) {
-		upsert(deviceId, name);
+		upsert(this.changePlayerNameSql, deviceId, name);
 	}
 
-	private void upsert(String deviceId, String fieldValue) {
-		int rowsAffected = jdbcTemplate.update(this.setActivitiesSql, deviceId, fieldValue, fieldValue, deviceId);
+	private void upsert(String sqlTemplate, String deviceId, String fieldValue) {
+		int rowsAffected = jdbcTemplate.update(sqlTemplate, deviceId, fieldValue, fieldValue, deviceId);
 
 		if (rowsAffected != 1) {
 			LOGGER.error(String.format("Should have affected exactly 1 row, deviceId: %s", deviceId));
