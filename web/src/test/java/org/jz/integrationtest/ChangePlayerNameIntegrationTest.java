@@ -1,6 +1,7 @@
-package integrationtest;
+package org.jz.integrationtest;
 
 import org.junit.Test;
+import org.jz.BaseTest;
 import org.parkpickup.api.*;
 import org.parkpickup.api.exception.ApplicationException;
 import org.parkpickup.api.exception.UserException;
@@ -15,7 +16,7 @@ import static org.parkpickup.api.ActivityEnum.BASKETBALL;
 import static org.parkpickup.api.ActivityEnum.TENNIS;
 import static org.parkpickup.api.exception.FailedReason.VALIDATION;
 
-public class ChangePlayerNameIntegrationTest extends BaseIntegrationTest {
+public class ChangePlayerNameIntegrationTest extends BaseTest {
     @Test
     public void setPlayerNameFirstTime() throws ApplicationException, UserException {
         String deviceId = "deviceId";

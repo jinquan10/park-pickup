@@ -1,7 +1,8 @@
-package integrationtest;
+package org.jz.integrationtest;
 
 import org.junit.After;
 import org.junit.Test;
+import org.jz.BaseTest;
 import org.parkpickup.DataCleanupManager;
 import org.parkpickup.api.Location;
 import org.parkpickup.api.Park;
@@ -17,7 +18,7 @@ import static java.util.UUID.randomUUID;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class IdleUsersIntegrationTest extends BaseIntegrationTest {
+public class IdleUsersIntegrationTest extends BaseTest {
     @Autowired
     private DataCleanupManager dataCleanupManager;
 

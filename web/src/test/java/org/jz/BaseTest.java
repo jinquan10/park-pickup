@@ -1,4 +1,4 @@
-package integrationtest;
+package org.jz;
 
 import org.junit.Before;
 import org.junit.Ignore;
@@ -16,7 +16,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 @Ignore
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = DEFINED_PORT, classes = Application.class)
-public class BaseIntegrationTest {
+public class BaseTest {
     protected static final ParkPickupV1Client client = new ParkPickupV1Client(ClientEnv.TEST);
 
     static {

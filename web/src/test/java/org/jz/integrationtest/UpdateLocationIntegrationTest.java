@@ -1,6 +1,7 @@
-package integrationtest;
+package org.jz.integrationtest;
 
 import org.junit.Test;
+import org.jz.BaseTest;
 import org.parkpickup.api.Location;
 import org.parkpickup.api.Park;
 import org.parkpickup.api.Person;
@@ -16,7 +17,7 @@ import static java.util.UUID.randomUUID;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class UpdateLocationIntegrationTest extends BaseIntegrationTest {
+public class UpdateLocationIntegrationTest extends BaseTest {
     @Test
     public void updateLocationTwice_ShouldHaveNoEffectOnReturnValue()
             throws UserException, ApplicationException {

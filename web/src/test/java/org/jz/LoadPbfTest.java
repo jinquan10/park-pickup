@@ -1,10 +1,11 @@
-import integrationtest.BaseIntegrationTest;
+package org.jz;
+
 import org.junit.Ignore;
 import org.junit.Test;
 import org.parkpickup.etl.PbfToDbEtl;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class LoadPbfTest extends BaseIntegrationTest {
+public class LoadPbfTest extends BaseTest {
     @Autowired
     private PbfToDbEtl pbfToDbEtl;
 

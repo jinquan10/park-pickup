@@ -1,6 +1,7 @@
-package integrationtest;
+package org.jz.integrationtest;
 
 import org.junit.Test;
+import org.jz.BaseTest;
 import org.parkpickup.api.ActivityEnum;
 import org.parkpickup.api.Location;
 import org.parkpickup.api.Park;
@@ -15,7 +16,7 @@ import static org.junit.Assert.*;
 import static org.parkpickup.api.ActivityEnum.BASKETBALL;
 import static org.parkpickup.api.ActivityEnum.TENNIS;
 
-public class SetActivitiesIntegrationTest extends BaseIntegrationTest {
+public class SetActivitiesIntegrationTest extends BaseTest {
     @Test
     public void setActivities_gotoGrassLawnPark_getNearbyParks500MetersAwayFromGrasslawn()
             throws UserException, ApplicationException {

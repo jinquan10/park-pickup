@@ -1,8 +1,9 @@
-package integrationtest;
+package org.jz.integrationtest;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.jz.BaseTest;
 import org.mockito.Mockito;
 import org.parkpickup.api.PlayerName;
 import org.parkpickup.api.exception.ApplicationException;
@@ -21,7 +22,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 
 @DirtiesContext
-public class ExceptionsIntegrationTest extends BaseIntegrationTest {
+public class ExceptionsIntegrationTest extends BaseTest {
     private ParkPickupDao parkPickupDao = Mockito.mock(ParkPickupDao.class);
 
     @Autowired
