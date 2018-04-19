@@ -1,22 +1,40 @@
 package integrationtest;
 
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 import org.parkpickup.api.PlayerName;
 import org.parkpickup.api.exception.ApplicationException;
 import org.parkpickup.api.exception.UserException;
+import org.parkpickup.app.ParkPickupControllerV1;
 import org.parkpickup.db.ParkPickupDao;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Set;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 
+@DirtiesContext
 public class ExceptionsIntegrationTest extends BaseIntegrationTest {
-    @MockBean
-    private ParkPickupDao parkPickupDao;
+    private ParkPickupDao parkPickupDao = Mockito.mock(ParkPickupDao.class);
+
+    @Autowired
+    private ParkPickupControllerV1 parkPickupControllerV1;
+
+    @Before
+    public void before() {
+        try {
+            ReflectionTestUtils.setField(this.parkPickupControllerV1, "parkPickupDao", this.parkPickupDao);
+        } catch (Throwable e) {
+            fail();
+        }
+    }
 
     @After
     public void after() {
