@@ -1,17 +1,21 @@
 package org.jz.perftest;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.jz.BaseTest;
 import org.parkpickup.api.Location;
 import org.parkpickup.api.PlayerName;
 import org.parkpickup.api.exception.ApplicationException;
 import org.parkpickup.api.exception.UserException;
+import org.parkpickup.app.perf.PerfMetrics;
+import org.parkpickup.app.perf.PerfReport;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.UUID;
 
 public class PerfTest extends BaseTest {
-	@Ignore
+	@Autowired
+	private PerfMetrics perfMetrics;
+
 	@Test
 	public void testUpdateLocation() throws ApplicationException, UserException {
 		String expectedDeviceId = UUID.randomUUID().toString();
@@ -27,7 +31,8 @@ public class PerfTest extends BaseTest {
 			totalMillis += (System.currentTimeMillis() - startMillis);
 		}
 
-		System.out.println("Total millis: " + totalMillis);
-		System.out.println("Average millis: " + totalMillis/numIterations);
+		for (PerfReport report : this.perfMetrics.getPerfReports()) {
+			System.out.println(String.format("Method: %s | Average millis: %s", report.fullMethodName, report.averageElapsedMillis));
+		}
 	}
 }
