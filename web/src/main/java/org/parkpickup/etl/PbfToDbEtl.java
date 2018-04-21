@@ -5,7 +5,7 @@ import net.morbz.osmonaut.IOsmonautReceiver;
 import net.morbz.osmonaut.Osmonaut;
 import org.parkpickup.Util;
 import org.parkpickup.db.DataSourceFactory;
-import org.parkpickup.db.SeedOperationsDao;
+import org.parkpickup.db.SeedOperations;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
 
@@ -18,7 +18,7 @@ public class PbfToDbEtl {
     private IOsmonautReceiver osmonautReceiver;
 
     @Inject
-    private SeedOperationsDao seedOperationsDao;
+    private SeedOperations seedOperationsDao;
 
     @Inject
     private Util util;

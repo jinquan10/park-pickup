@@ -1,18 +1,19 @@
 package org.parkpickup.app.perf;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+//@Value("${metrics.perf.enabled}")
+@Component
 public class PerfMetrics {
-	private final int averagesNumLast;
-
+	@Value("${perf.averages.num.last}")
+	private int averagesNumLast;
 	private final Map<String, PerfArray> methodAverages = new HashMap<>();
-
-	public PerfMetrics(int averagesNumLast) {
-		this.averagesNumLast = averagesNumLast;
-	}
 
 	public void add(String fullMethodName, long millisElapsed) {
 		synchronized (this.methodAverages) {
