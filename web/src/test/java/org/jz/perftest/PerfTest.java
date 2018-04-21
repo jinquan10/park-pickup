@@ -1,5 +1,6 @@
 package org.jz.perftest;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.jz.BaseTest;
 import org.parkpickup.api.Location;
@@ -15,6 +16,7 @@ public class PerfTest extends BaseTest {
 	@Autowired
 	private PerfMetrics perfMetrics;
 
+	@Ignore
 	@Test
 	public void testUpdateLocation() throws ApplicationException, UserException {
 		String expectedDeviceId = UUID.randomUUID().toString();

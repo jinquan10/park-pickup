@@ -3,7 +3,7 @@ package org.jz;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.runner.RunWith;
-import org.parkpickup.Application;
+import org.parkpickup.TestApplication;
 import org.parkpickup.client.ClientEnv;
 import org.parkpickup.client.ParkPickupV1Client;
 import org.parkpickup.db.init.PersistenceInit;
@@ -15,13 +15,9 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 
 @Ignore
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = DEFINED_PORT, classes = Application.class)
+@SpringBootTest(webEnvironment = DEFINED_PORT, classes = TestApplication.class)
 public class BaseTest {
     protected static final ParkPickupV1Client client = new ParkPickupV1Client(ClientEnv.TEST);
-
-    static {
-        System.setProperty("env", "test");
-    }
 
     @Autowired
     private PersistenceInit persistenceInit;
