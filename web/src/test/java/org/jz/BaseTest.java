@@ -3,7 +3,7 @@ package org.jz;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.runner.RunWith;
-import org.parkpickup.TestApplication;
+import org.parkpickup.TestConfiguration;
 import org.parkpickup.client.ClientEnv;
 import org.parkpickup.client.ParkPickupV1Client;
 import org.parkpickup.db.init.PersistenceInit;
@@ -15,7 +15,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 
 @Ignore
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = DEFINED_PORT, classes = TestApplication.class)
+@SpringBootTest(webEnvironment = DEFINED_PORT, classes = TestConfiguration.class)
 public class BaseTest {
     protected static final ParkPickupV1Client client = new ParkPickupV1Client(ClientEnv.TEST);
 

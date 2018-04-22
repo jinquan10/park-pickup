@@ -12,7 +12,7 @@
     <artifactId>web</artifactId>
 
     <properties>
-        <start-class>org.parkpickup.TestApplication</start-class>
+        <start-class>org.parkpickup.Application</start-class>
     </properties>
 
     <dependencies>
