@@ -4,6 +4,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.jz.BaseTest;
 import org.parkpickup.api.Location;
+import org.parkpickup.api.PlayerName;
 import org.parkpickup.api.exception.ApplicationException;
 import org.parkpickup.api.exception.UserException;
 import org.parkpickup.app.perf.PerfMetrics;
@@ -27,8 +28,8 @@ public class PerfTest extends BaseTest {
 		for (long i = 0; i < numIterations; i++) {
 			long startMillis = System.currentTimeMillis();
 			client.updateLocation(expectedDeviceId, grassLawnLocation);
-//			client.getParks(grassLawnLocation.lat, grassLawnLocation.lng, 5000, null);
-//			client.changePlayerName(expectedDeviceId, new PlayerName("playerName"));
+			client.getParks(grassLawnLocation.lat, grassLawnLocation.lng, 5000, null);
+			client.changePlayerName(expectedDeviceId, new PlayerName("playerName"));
 			totalMillis += (System.currentTimeMillis() - startMillis);
 		}
 
