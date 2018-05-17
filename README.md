@@ -4,3 +4,7 @@ A mobile app that can let users know who are playing pickup basketball/any other
 (Mobile side not started yet).
 Postgres/Postgis
 Spring Boot backend service
+
+1. postgres
+2. postgis
+3. download pbf file from http://download.geofabrik.de/north-america/us/washington.html
