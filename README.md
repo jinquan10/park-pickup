@@ -8,3 +8,4 @@ Spring Boot backend service
 1. postgres
 2. postgis
 3. download pbf file from http://download.geofabrik.de/north-america/us/washington.html
+4. run LoadPbfTest.java using file from #3
